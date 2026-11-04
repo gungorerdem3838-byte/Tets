@@ -1,0 +1,337 @@
+name: Otomatik Kur ve Derle (Fabric 1.21.11)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu Cek
+        uses: actions/checkout@v4
+
+      - name: Tum Mod Dosyalarini Otomatik Olustur
+        run: |
+          mkdir -p "src/main/java/com/buyumodu"
+          mkdir -p "src/main/resources/data/buyumodu/recipe"
+          mkdir -p "src/main/resources/data/buyumodu/loot_table/blocks"
+          mkdir -p "src/main/resources/data/minecraft/tags/block/mineable"
+          mkdir -p "src/main/resources/assets/buyumodu/lang"
+          mkdir -p "src/main/resources/assets/buyumodu/blockstates"
+          mkdir -p "src/main/resources/assets/buyumodu/items"
+          mkdir -p "src/main/resources/assets/buyumodu/models/item"
+          mkdir -p "src/main/resources/assets/buyumodu/models/block"
+
+          cat << 'EOF' > settings.gradle
+          pluginManagement {
+              repositories {
+                  maven {
+                      name = 'Fabric'
+                      url = 'https://maven.fabricmc.net/'
+                  }
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          EOF
+
+          cat << 'EOF' > gradle.properties
+          org.gradle.jvmargs=-Xmx2G
+          minecraft_version=1.21.11
+          yarn_mappings=1.21.11+build.1
+          loader_version=0.16.10
+          loom_version=1.9-SNAPSHOT
+          mod_version=1.0.0
+          maven_group=com.buyumodu
+          archives_base_name=buyumodu
+          fabric_version=0.114.0+1.21.11
+          EOF
+
+          cat << 'EOF' > build.gradle
+          plugins {
+              id 'fabric-loom' version '1.9-SNAPSHOT'
+              id 'maven-publish'
+          }
+          version = project.mod_version
+          group = project.maven_group
+          base {
+              archivesName = project.archives_base_name
+          }
+          repositories {
+              mavenCentral()
+          }
+          dependencies {
+              minecraft "com.mojang:minecraft:${project.minecraft_version}"
+              mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+              modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+              modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+          }
+          processResources {
+              inputs.property "version", project.version
+              filesMatching("fabric.mod.json") {
+                  expand "version": inputs.properties.version
+              }
+          }
+          tasks.withType(JavaCompile).configureEach {
+              it.options.release = 21
+          }
+          java {
+              withSourcesJar()
+              sourceCompatibility = JavaVersion.VERSION_21
+              targetCompatibility = JavaVersion.VERSION_21
+          }
+          EOF
+
+          cat << 'EOF' > src/main/java/com/buyumodu/BuyuModu.java
+          package com.buyumodu;
+
+          import net.fabricmc.api.ModInitializer;
+          import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+          import net.minecraft.block.AbstractBlock;
+          import net.minecraft.block.Block;
+          import net.minecraft.block.Blocks;
+          import net.minecraft.item.BlockItem;
+          import net.minecraft.item.Item;
+          import net.minecraft.item.ItemGroups;
+          import net.minecraft.registry.Registries;
+          import net.minecraft.registry.Registry;
+          import net.minecraft.registry.RegistryKey;
+          import net.minecraft.registry.RegistryKeys;
+          import net.minecraft.util.Identifier;
+          import java.util.function.Function;
+
+          public class BuyuModu implements ModInitializer {
+              public static final String MOD_ID = "buyumodu";
+
+              public static final Block EYE_PEDESTAL = registerBlock("eye_pedestal",
+                      settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+
+              public static final Block PEARL_PEDESTAL = registerBlock("pearl_pedestal",
+                      settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+
+              public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
+                      settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+
+              private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory) {
+                  Identifier id = Identifier.of(MOD_ID, name);
+                  RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, id);
+                  AbstractBlock.Settings settings = AbstractBlock.Settings.copy(Blocks.BLACKSTONE).registryKey(blockKey);
+                  Block block = Registry.register(Registries.BLOCK, blockKey, factory.apply(settings));
+
+                  RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
+                  Item.Settings itemSettings = new Item.Settings().useBlockPrefixedTranslationKey().registryKey(itemKey);
+                  Registry.register(Registries.ITEM, itemKey, new BlockItem(block, itemSettings));
+
+                  return block;
+              }
+
+              @Override
+              public void onInitialize() {
+                  ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+                      entries.add(EYE_PEDESTAL);
+                      entries.add(PEARL_PEDESTAL);
+                      entries.add(EMERALD_PEDESTAL);
+                  });
+              }
+          }
+          EOF
+
+          cat << 'EOF' > src/main/resources/fabric.mod.json
+          {
+            "schemaVersion": 1,
+            "id": "buyumodu",
+            "version": "${version}",
+            "name": "Büyü Modu",
+            "description": "GUI içermeyen ritüel büyü sistemi.",
+            "authors": ["Erdem"],
+            "license": "MIT",
+            "environment": "*",
+            "entrypoints": {
+              "main": [
+                "com.buyumodu.BuyuModu"
+              ]
+            },
+            "depends": {
+              "fabricloader": ">=0.16.0",
+              "minecraft": "~1.21.11",
+              "java": ">=21",
+              "fabric-api": "*"
+            }
+          }
+          EOF
+
+          cat << 'EOF' > src/main/resources/data/buyumodu/recipe/eye_pedestal.json
+          {
+            "type": "minecraft:crafting_shaped",
+            "category": "misc",
+            "pattern": ["S", "M", "W"],
+            "key": {
+              "S": "minecraft:blackstone_slab",
+              "M": "minecraft:ender_eye",
+              "W": "minecraft:blackstone_wall"
+            },
+            "result": { "id": "buyumodu:eye_pedestal", "count": 1 }
+          }
+          EOF
+
+          cat << 'EOF' > src/main/resources/data/buyumodu/recipe/pearl_pedestal.json
+          {
+            "type": "minecraft:crafting_shaped",
+            "category": "misc",
+            "pattern": ["S", "M", "W"],
+            "key": {
+              "S": "minecraft:blackstone_slab",
+              "M": "minecraft:ender_pearl",
+              "W": "minecraft:blackstone_wall"
+            },
+            "result": { "id": "buyumodu:pearl_pedestal", "count": 1 }
+          }
+          EOF
+
+          cat << 'EOF' > src/main/resources/data/buyumodu/recipe/emerald_pedestal.json
+          {
+            "type": "minecraft:crafting_shaped",
+            "category": "misc",
+            "pattern": ["S", "M", "W"],
+            "key": {
+              "S": "minecraft:blackstone_slab",
+              "M": "minecraft:emerald_block",
+              "W": "minecraft:blackstone_wall"
+            },
+            "result": { "id": "buyumodu:emerald_pedestal", "count": 1 }
+          }
+          EOF
+
+          cat << 'EOF' > src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json
+          {
+            "replace": false,
+            "values": [
+              "buyumodu:eye_pedestal",
+              "buyumodu:pearl_pedestal",
+              "buyumodu:emerald_pedestal"
+            ]
+          }
+          EOF
+
+          cat << 'EOF' > src/main/resources/assets/buyumodu/lang/tr_tr.json
+          {
+            "block.buyumodu.eye_pedestal": "Göz Sütunu",
+            "block.buyumodu.pearl_pedestal": "İnci Sütunu",
+            "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu"
+          }
+          EOF
+
+          cat << 'EOF' > src/main/resources/assets/buyumodu/lang/en_us.json
+          {
+            "block.buyumodu.eye_pedestal": "Eye Pedestal",
+            "block.buyumodu.pearl_pedestal": "Pearl Pedestal",
+            "block.buyumodu.emerald_pedestal": "Emerald Pedestal"
+          }
+          EOF
+
+          for id in eye_pedestal pearl_pedestal emerald_pedestal; do
+            if [ "$id" = "eye_pedestal" ]; then tex="minecraft:item/ender_eye"; fi
+            if [ "$id" = "pearl_pedestal" ]; then tex="minecraft:item/ender_pearl"; fi
+            if [ "$id" = "emerald_pedestal" ]; then tex="minecraft:block/emerald_block"; fi
+
+            cat << EOF > src/main/resources/data/buyumodu/loot_table/blocks/${id}.json
+          {
+            "type": "minecraft:block",
+            "pools": [{
+              "rolls": 1.0,
+              "conditions": [{"condition": "minecraft:survives_explosion"}],
+              "entries": [{"type": "minecraft:item", "name": "buyumodu:${id}"}]
+            }]
+          }
+          EOF
+
+            cat << EOF > src/main/resources/assets/buyumodu/blockstates/${id}.json
+          {
+            "variants": { "": { "model": "buyumodu:block/${id}" } }
+          }
+          EOF
+
+            cat << EOF > src/main/resources/assets/buyumodu/items/${id}.json
+          {
+            "model": { "type": "minecraft:model", "model": "buyumodu:block/${id}" }
+          }
+          EOF
+
+            cat << EOF > src/main/resources/assets/buyumodu/models/item/${id}.json
+          {
+            "parent": "buyumodu:block/${id}"
+          }
+          EOF
+
+            cat << EOF > src/main/resources/assets/buyumodu/models/block/${id}.json
+          {
+            "parent": "minecraft:block/block",
+            "textures": {
+              "particle": "minecraft:block/blackstone",
+              "base": "minecraft:block/blackstone",
+              "top": "minecraft:block/blackstone_top",
+              "core": "${tex}"
+            },
+            "elements": [
+              {
+                "from": [4, 0, 4], "to": [12, 6, 12],
+                "faces": {
+                  "north": {"texture": "#base"}, "south": {"texture": "#base"},
+                  "west": {"texture": "#base"}, "east": {"texture": "#base"},
+                  "up": {"texture": "#top"}, "down": {"texture": "#top"}
+                }
+              },
+              {
+                "from": [5, 6, 5], "to": [11, 12, 11],
+                "faces": {
+                  "north": {"texture": "#core"}, "south": {"texture": "#core"},
+                  "west": {"texture": "#core"}, "east": {"texture": "#core"}
+                }
+              },
+              {
+                "from": [2, 12, 2], "to": [14, 16, 14],
+                "faces": {
+                  "north": {"texture": "#base"}, "south": {"texture": "#base"},
+                  "west": {"texture": "#base"}, "east": {"texture": "#base"},
+                  "up": {"texture": "#top"}, "down": {"texture": "#top"}
+                }
+              }
+            ]
+          }
+          EOF
+          done
+
+      - name: Dosyalari GitHub Deposuna Kaydet
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --staged --quiet || git commit -m "Mod dosyalari otomatik olusturuldu"
+          git push
+
+      - name: Java 21 Kur
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Gradle Kur
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.12'
+
+      - name: Modu Derle (Build)
+        run: gradle build
+
+      - name: Mod Jar Dosyasini Yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: buyu-modu-1.21.11-jar
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
