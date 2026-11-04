@@ -19,13 +19,13 @@ public class BuyuModu implements ModInitializer {
     public static final String MOD_ID = "buyumodu";
 
     public static final Block EYE_PEDESTAL = registerBlock("eye_pedestal",
-            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+  settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     public static final Block PEARL_PEDESTAL = registerBlock("pearl_pedestal",
-            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+  settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
-            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+  settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory) {
         Identifier id = Identifier.of(MOD_ID, name);
@@ -43,9 +43,9 @@ public class BuyuModu implements ModInitializer {
     @Override
     public void onInitialize() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
-            entries.add(EYE_PEDESTAL);
-            entries.add(PEARL_PEDESTAL);
-            entries.add(EMERALD_PEDESTAL);
+  entries.add(EYE_PEDESTAL);
+  entries.add(PEARL_PEDESTAL);
+  entries.add(EMERALD_PEDESTAL);
         });
     }
 }
