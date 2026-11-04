@@ -45,7 +45,7 @@ jobs:
           minecraft_version=1.21.11
           yarn_mappings=1.21.11+build.1
           loader_version=0.16.10
-          loom_version=1.9-SNAPSHOT
+          loom_version=1.10-SNAPSHOT
           mod_version=1.0.0
           maven_group=com.buyumodu
           archives_base_name=buyumodu
@@ -54,32 +54,39 @@ jobs:
 
           cat << 'EOF' > build.gradle
           plugins {
-              id 'fabric-loom' version '1.9-SNAPSHOT'
+              id 'fabric-loom' version '1.10-SNAPSHOT'
               id 'maven-publish'
           }
+
           version = project.mod_version
           group = project.maven_group
+
           base {
               archivesName = project.archives_base_name
           }
+
           repositories {
               mavenCentral()
           }
+
           dependencies {
               minecraft "com.mojang:minecraft:${project.minecraft_version}"
               mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
               modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
               modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
           }
+
           processResources {
               inputs.property "version", project.version
               filesMatching("fabric.mod.json") {
                   expand "version": inputs.properties.version
               }
           }
+
           tasks.withType(JavaCompile).configureEach {
               it.options.release = 21
           }
+
           java {
               withSourcesJar()
               sourceCompatibility = JavaVersion.VERSION_21
@@ -306,16 +313,19 @@ jobs:
           EOF
           done
 
+          # Satir basi bosluklarini temizle
+          sed -i 's/^          //' settings.gradle gradle.properties build.gradle src/main/java/com/buyumodu/BuyuModu.java src/main/resources/fabric.mod.json
+
       - name: Dosyalari GitHub Deposuna Kaydet
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --staged --quiet || git commit -m "Mod dosyalari otomatik olusturuldu"
+          git diff --staged --quiet || git commit -m "Loom 1.10-SNAPSHOT guncellemesi"
           git push
 
       - name: Java 21 Kur
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'temurin'
@@ -323,7 +333,7 @@ jobs:
       - name: Gradle Kur
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.12'
+          gradle-version: '8.12.1'
 
       - name: Modu Derle (Build)
         run: gradle build
