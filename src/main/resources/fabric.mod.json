@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "buyumodu",
+  "version": "${version}",
+  "name": "Büyü Modu",
+  "description": "GUI içermeyen ritüel büyü sistemi.",
+  "authors": ["Erdem"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.buyumodu.BuyuModu"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}

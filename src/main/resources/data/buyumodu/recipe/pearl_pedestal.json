@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["S", "M", "W"],
+  "key": {
+    "S": "minecraft:blackstone_slab",
+    "M": "minecraft:ender_pearl",
+    "W": "minecraft:blackstone_wall"
+  },
+  "result": { "id": "buyumodu:pearl_pedestal", "count": 1 }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["S", "M", "W"],
+  "key": {
+    "S": "minecraft:blackstone_slab",
+    "M": "minecraft:emerald_block",
+    "W": "minecraft:blackstone_wall"
+  },
+  "result": { "id": "buyumodu:emerald_pedestal", "count": 1 }
+}

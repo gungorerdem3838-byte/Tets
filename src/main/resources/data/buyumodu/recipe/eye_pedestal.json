@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": ["S", "M", "W"],
+  "key": {
+    "S": "minecraft:blackstone_slab",
+    "M": "minecraft:ender_eye",
+    "W": "minecraft:blackstone_wall"
+  },
+  "result": { "id": "buyumodu:eye_pedestal", "count": 1 }
+}
