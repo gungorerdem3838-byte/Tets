@@ -15,22 +15,8 @@ jobs:
       - name: Depoyu Cek
         uses: actions/checkout@v4
 
-      - name: Fabric 1.21.11 Surumlerini Cek ve Dosyalari Olustur
+      - name: Tum Mod Dosyalarini Olustur
         run: |
-          # Fabric resmi sunucularindan en guncel Loom, Loader ve Fabric API surumlerini otomatik bul
-          LOOM_VER=$(curl -s https://maven.fabricmc.net/net/fabricmc/fabric-loom/maven-metadata.xml | grep -oPm1 "(?<=<release>)[^<]+")
-          if [ -z "$LOOM_VER" ]; then LOOM_VER="1.11-SNAPSHOT"; fi
-
-          LOADER_VER=$(curl -s https://meta.fabricmc.net/v2/versions/loader | jq -r '.[0].version')
-          if [ -z "$LOADER_VER" ] || [ "$LOADER_VER" = "null" ]; then LOADER_VER="0.16.10"; fi
-
-          FAPI_VER=$(curl -s https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml | grep "<version>" | grep "+1.21.11<" | tail -n 1 | sed -e 's/.*<version>//' -e 's/<\/version>.*//' | tr -d '[:space:]')
-          if [ -z "$FAPI_VER" ]; then
-            FAPI_VER=$(curl -s https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/maven-metadata.xml | grep -oPm1 "(?<=<release>)[^<]+")
-          fi
-
-          echo "Bulunan Surumler -> Loom: $LOOM_VER | Loader: $LOADER_VER | Fabric API: $FAPI_VER"
-
           mkdir -p "src/main/java/com/buyumodu"
           mkdir -p "src/main/resources/data/buyumodu/recipe"
           mkdir -p "src/main/resources/data/buyumodu/loot_table/blocks"
@@ -54,19 +40,21 @@ jobs:
           }
           EOF
 
-          cat << EOF > gradle.properties
+          cat << 'EOF' > gradle.properties
           org.gradle.jvmargs=-Xmx2G
           minecraft_version=1.21.11
-          loader_version=${LOADER_VER}
+          yarn_mappings=1.21.11+build.5
+          loader_version=0.18.4
+          loom_version=1.14.10
           mod_version=1.0.0
           maven_group=com.buyumodu
           archives_base_name=buyumodu
-          fabric_version=${FAPI_VER}
+          fabric_version=0.141.3+1.21.11
           EOF
 
-          cat << EOF > build.gradle
+          cat << 'EOF' > build.gradle
           plugins {
-              id 'fabric-loom' version '${LOOM_VER}'
+              id 'fabric-loom' version "${loom_version}"
               id 'maven-publish'
           }
 
@@ -82,10 +70,10 @@ jobs:
           }
 
           dependencies {
-              minecraft "com.mojang:minecraft:\${project.minecraft_version}"
-              mappings loom.officialMojangMappings()
-              modImplementation "net.fabricmc:fabric-loader:\${project.loader_version}"
-              modImplementation "net.fabricmc.fabric-api:fabric-api:\${project.fabric_version}"
+              minecraft "com.mojang:minecraft:${project.minecraft_version}"
+              mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+              modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+              modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
           }
 
           processResources {
@@ -111,50 +99,51 @@ jobs:
 
           import net.fabricmc.api.ModInitializer;
           import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-          import net.minecraft.core.Registry;
-          import net.minecraft.core.registries.BuiltInRegistries;
-          import net.minecraft.core.registries.Registries;
-          import net.minecraft.resources.Identifier;
-          import net.minecraft.resources.ResourceKey;
-          import net.minecraft.world.item.BlockItem;
-          import net.minecraft.world.item.CreativeModeTabs;
-          import net.minecraft.world.item.Item;
-          import net.minecraft.world.level.block.Block;
-          import net.minecraft.world.level.block.Blocks;
-          import net.minecraft.world.level.block.state.BlockBehaviour;
+          import net.minecraft.block.AbstractBlock;
+          import net.minecraft.block.Block;
+          import net.minecraft.block.Blocks;
+          import net.minecraft.item.BlockItem;
+          import net.minecraft.item.Item;
+          import net.minecraft.item.ItemGroups;
+          import net.minecraft.registry.Registries;
+          import net.minecraft.registry.Registry;
+          import net.minecraft.registry.RegistryKey;
+          import net.minecraft.registry.RegistryKeys;
+          import net.minecraft.util.Identifier;
+
           import java.util.function.Function;
 
           public class BuyuModu implements ModInitializer {
               public static final String MOD_ID = "buyumodu";
 
               public static final Block EYE_PEDESTAL = registerBlock("eye_pedestal",
-                      props -> new Block(props.strength(2.0f, 6.0f).requiresCorrectToolForDrops().noOcclusion()));
+                      settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
               public static final Block PEARL_PEDESTAL = registerBlock("pearl_pedestal",
-                      props -> new Block(props.strength(2.0f, 6.0f).requiresCorrectToolForDrops().noOcclusion()));
+                      settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
               public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
-                      props -> new Block(props.strength(2.0f, 6.0f).requiresCorrectToolForDrops().noOcclusion()));
+                      settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
-              private static Block registerBlock(String name, Function<BlockBehaviour.Properties, Block> factory) {
-                  Identifier id = Identifier.fromNamespaceAndPath(MOD_ID, name);
-                  ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
-                  BlockBehaviour.Properties props = BlockBehaviour.Properties.ofFullCopy(Blocks.BLACKSTONE).setId(blockKey);
-                  Block block = Registry.register(BuiltInRegistries.BLOCK, blockKey, factory.apply(props));
+              private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory) {
+                  Identifier id = Identifier.of(MOD_ID, name);
+                  RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, id);
+                  AbstractBlock.Settings settings = AbstractBlock.Settings.copy(Blocks.BLACKSTONE).registryKey(blockKey);
+                  Block block = Registry.register(Registries.BLOCK, blockKey, factory.apply(settings));
 
-                  ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
-                  Item.Properties itemProps = new Item.Properties().useBlockDescriptionPrefix().setId(itemKey);
-                  Registry.register(BuiltInRegistries.ITEM, itemKey, new BlockItem(block, itemProps));
+                  RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
+                  Item.Settings itemSettings = new Item.Settings().useBlockPrefixedTranslationKey().registryKey(itemKey);
+                  Registry.register(Registries.ITEM, itemKey, new BlockItem(block, itemSettings));
 
                   return block;
               }
 
               @Override
               public void onInitialize() {
-                  ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(entries -> {
-                      entries.accept(EYE_PEDESTAL);
-                      entries.accept(PEARL_PEDESTAL);
-                      entries.accept(EMERALD_PEDESTAL);
+                  ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+                      entries.add(EYE_PEDESTAL);
+                      entries.add(PEARL_PEDESTAL);
+                      entries.add(EMERALD_PEDESTAL);
                   });
               }
           }
@@ -176,7 +165,7 @@ jobs:
               ]
             },
             "depends": {
-              "fabricloader": ">=0.16.0",
+              "fabricloader": ">=0.18.0",
               "minecraft": "~1.21.11",
               "java": ">=21",
               "fabric-api": "*"
@@ -325,14 +314,14 @@ jobs:
           EOF
           done
 
-          sed -i 's/^          //' settings.gradle gradle.properties build.gradle src/main/java/com/buyumodu/BuyuModu.java src/main/resources/fabric.mod.json
+          find settings.gradle gradle.properties build.gradle src -type f -exec sed -i 's/^          //' {} +
 
       - name: Dosyalari GitHub Deposuna Kaydet
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --staged --quiet || git commit -m "Mojang Mappings ve guncel Loom gecisi"
+          git diff --staged --quiet || git commit -m "Fabric 1.21.11 dogrulanmis surumler"
           git push
 
       - name: Java 21 Kur
@@ -341,10 +330,10 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Gradle Kur
+      - name: Gradle 9.5.0 Kur
         uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.14'
+          gradle-version: '9.5.0'
 
       - name: Modu Derle (Build)
         run: gradle build --no-daemon
