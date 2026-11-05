@@ -1,4 +1,21 @@
-    - name: Tum Mod Dosyalarini Olustur
+.: Otomatik Kur ve Derle (Fabric 1.21.11)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Depoyu Cek
+        uses: actions/checkout@v4
+
+      - name: Tum Mod Dosyalarini Olustur
         run: |
           mkdir -p "src/main/java/com/buyumodu"
           mkdir -p "src/main/resources/data/buyumodu/recipe"
@@ -342,4 +359,4 @@
           path: |
             build/libs/*.jar
             !build/libs/*-sources.jar
-```
+
