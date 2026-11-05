@@ -83,6 +83,7 @@ public class BuyuModu implements ModInitializer {
                     }
                     frame.discard();
                     world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    PedestalBlock.checkRitualAround(world, pos);
                 }
                 return ActionResult.SUCCESS;
             }
