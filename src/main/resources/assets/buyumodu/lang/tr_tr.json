@@ -2,5 +2,8 @@
   "itemGroup.buyumodu.buyu_group": "Büyü Modu",
   "block.buyumodu.eye_pedestal": "Göz Sütunu",
   "block.buyumodu.pearl_pedestal": "İnci Sütunu",
-  "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu"
+  "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu",
+  "item.buyumodu.kanama_book": "Kanama Büyü Kitabı",
+  "enchantment.buyumodu.kanama": "Kanama",
+  "effect.buyumodu.bleeding": "Kanama"
 }

@@ -3,16 +3,24 @@ package com.buyumodu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.component.ComponentType;
+import net.minecraft.component.ComponentChanges;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -26,14 +34,13 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class PedestalBlock extends Block {
-    // Yarıçapı 0.1 blok (1.6 piksel) daraltılmış özel VoxelShape
     private static final VoxelShape SHAPE = VoxelShapes.union(
             Block.createCuboidShape(5.0, 0.0, 5.0, 11.0, 6.0, 11.0),
             Block.createCuboidShape(6.0, 6.0, 6.0, 10.0, 12.0, 10.0),
             Block.createCuboidShape(3.6, 12.0, 3.6, 12.4, 16.0, 12.4)
     );
 
-    // Yeşil (Zümrüt Sütunu) konumları: Merkezden 4 blok uzaklıkta (arada 3 boşluk)
+    // Yeşil Sütunlar (Zümrüt Sütunları) - 4 ana yön
     private static final int[][] EMERALD_OFFSETS = {
             {0, -4},
             {-4, 0},
@@ -41,7 +48,7 @@ public class PedestalBlock extends Block {
             {0, 4}
     };
 
-    // Mavi (İnci Sütunu) konumları: Merkezden çapraz 3 blok uzaklıkta
+    // Mavi Sütunlar (İnci Sütunları) - 4 çapraz köşe
     private static final int[][] PEARL_OFFSETS = {
             {-3, -3},
             {3, -3},
@@ -76,9 +83,7 @@ public class PedestalBlock extends Block {
         List<ItemFrameEntity> frames = getPedestalFrames(world, pos);
         for (ItemFrameEntity frame : frames) {
             ItemStack stack = frame.getHeldItemStack();
-            if (!stack.isEmpty()) {
-                return stack;
-            }
+            if (!stack.isEmpty()) return stack;
         }
         return ItemStack.EMPTY;
     }
@@ -104,7 +109,6 @@ public class PedestalBlock extends Block {
         }
     }
 
-    // Herhangi bir sütuna eşya konulduğunda veya alındığında yakınlardaki Göz Sütununu (Sarı) bulup ritüeli kontrol eder
     public static void checkRitualAround(World world, BlockPos changedPos) {
         if (world.isClient()) return;
 
@@ -119,71 +123,66 @@ public class PedestalBlock extends Block {
     }
 
     private static void tryPerformRitual(World world, BlockPos centerPos) {
-        // Merkezdeki sarı sütunun üstü boş olmalı (Elmas orada oluşacak)
-        if (!getDisplayedItem(world, centerPos).isEmpty()) {
-            return;
-        }
+        ItemStack centerItem = getDisplayedItem(world, centerPos);
+        // Merkezde kılıç veya balta olmalı ve henüz kanama büyüsü olmamalı
+        if (centerItem.isEmpty()) return;
 
-        // 1. 4 Yeşil (Zümrüt) sütunun doğru yerde olduğunu ve üstlerinde Demir Külçesi olduğunu doğrula
+        boolean isWeaponOrAxe = centerItem.getItem().toString().contains("sword") || 
+                                centerItem.getItem().toString().contains("axe") ||
+                                centerItem.getItem().toString().contains("sword") ||
+                                centerItem.getItem().getTranslationKey().contains("sword") ||
+                                centerItem.getItem().getTranslationKey().contains("axe");
+
+        // 4 Yeşil (Zümrüt Sütunu) üstünde Zümrüt olmalı
         for (int[] offset : EMERALD_OFFSETS) {
-            BlockPos targetPos = centerPos.add(offset[0], 0, offset[1]);
-            if (!world.getBlockState(targetPos).isOf(BuyuModu.EMERALD_PEDESTAL)) {
-                return;
-            }
-            if (!getDisplayedItem(world, targetPos).isOf(Items.IRON_INGOT)) {
-                return;
-            }
+            BlockPos p = centerPos.add(offset[0], 0, offset[1]);
+            if (!world.getBlockState(p).isOf(BuyuModu.EMERALD_PEDESTAL)) return;
+            if (!getDisplayedItem(world, p).isOf(Items.EMERALD)) return;
         }
 
-        // 2. 4 Mavi (İnci) sütunun doğru yerde olduğunu ve üstlerinde Demir Külçesi olduğunu doğrula
+        // 4 Mavi (İnci Sütunu) üstünde Demir Külçesi olmalı
         for (int[] offset : PEARL_OFFSETS) {
-            BlockPos targetPos = centerPos.add(offset[0], 0, offset[1]);
-            if (!world.getBlockState(targetPos).isOf(BuyuModu.PEARL_PEDESTAL)) {
-                return;
-            }
-            if (!getDisplayedItem(world, targetPos).isOf(Items.IRON_INGOT)) {
-                return;
-            }
+            BlockPos p = centerPos.add(offset[0], 0, offset[1]);
+            if (!world.getBlockState(p).isOf(BuyuModu.PEARL_PEDESTAL)) return;
+            if (!getDisplayedItem(world, p).isOf(Items.IRON_INGOT)) return;
         }
 
-        // Tüm diziliş ve 8 demir külçesi tamam! Şimdi 8 demiri tüket:
+        // Ritüel Malzemelerini Tüket (Yeşil ve Mavilerdeki öğeleri sil)
         for (int[] offset : EMERALD_OFFSETS) {
             BlockPos p = centerPos.add(offset[0], 0, offset[1]);
             clearPedestalItem(world, p);
-            if (world instanceof ServerWorld serverWorld) {
-                serverWorld.spawnParticles(ParticleTypes.SMOKE, p.getX() + 0.5, p.getY() + 1.1, p.getZ() + 0.5, 12, 0.15, 0.15, 0.15, 0.02);
+            if (world instanceof ServerWorld sw) {
+                sw.spawnParticles(ParticleTypes.HAPPY_VILLAGER, p.getX() + 0.5, p.getY() + 1.1, p.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.02);
             }
         }
-
         for (int[] offset : PEARL_OFFSETS) {
             BlockPos p = centerPos.add(offset[0], 0, offset[1]);
             clearPedestalItem(world, p);
-            if (world instanceof ServerWorld serverWorld) {
-                serverWorld.spawnParticles(ParticleTypes.SMOKE, p.getX() + 0.5, p.getY() + 1.1, p.getZ() + 0.5, 12, 0.15, 0.15, 0.15, 0.02);
+            if (world instanceof ServerWorld sw) {
+                sw.spawnParticles(ParticleTypes.HAPPY_VILLAGER, p.getX() + 0.5, p.getY() + 1.1, p.getZ() + 0.5, 10, 0.2, 0.2, 0.2, 0.02);
             }
         }
 
-        // Ortadaki Sarı (Göz) sütunun üstünde Elmas oluştur!
-        setPedestalItem(world, centerPos, new ItemStack(Items.DIAMOND));
+        // Merkezdeki silaha Kanama Büyüsünü Ekle
+        RegistryKey<Enchantment> bleedingKey = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(BuyuModu.MOD_ID, "kanama"));
+        world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(bleedingKey).ifPresent(entry -> {
+            centerItem.addEnchantment(entry, 1);
+        });
 
-        if (world instanceof ServerWorld serverWorld) {
-            serverWorld.spawnParticles(ParticleTypes.END_ROD, centerPos.getX() + 0.5, centerPos.getY() + 1.2, centerPos.getZ() + 0.5, 30, 0.25, 0.25, 0.25, 0.05);
+        // Görsel efekt ve ses
+        setPedestalItem(world, centerPos, centerItem);
+        if (world instanceof ServerWorld sw) {
+            sw.spawnParticles(ParticleTypes.TOTEM_OF_UNDYING, centerPos.getX() + 0.5, centerPos.getY() + 1.2, centerPos.getZ() + 0.5, 40, 0.3, 0.3, 0.3, 0.1);
         }
-        world.playSound(null, centerPos, SoundEvents.BLOCK_END_PORTAL_SPAWN, SoundCategory.BLOCKS, 0.7f, 1.4f);
+        world.playSound(null, centerPos, SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundCategory.BLOCKS, 1.0f, 1.2f);
     }
 
     @Override
     protected ActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (hand != Hand.MAIN_HAND) {
-            return ActionResult.PASS;
-        }
-        if (world.isClient()) {
-            return ActionResult.SUCCESS;
-        }
+        if (hand != Hand.MAIN_HAND) return ActionResult.PASS;
+        if (world.isClient()) return ActionResult.SUCCESS;
 
         List<ItemFrameEntity> frames = getPedestalFrames(world, pos);
-
-        // Sütunun üstünde zaten eşya varsa onu oyuncuya geri ver
         if (!frames.isEmpty()) {
             for (ItemFrameEntity frame : frames) {
                 ItemStack held = frame.getHeldItemStack();
@@ -200,10 +199,8 @@ public class PedestalBlock extends Block {
             return ActionResult.SUCCESS;
         }
 
-        // Sütun boşsa ve oyuncunun elinde eşya varsa sütunun üstüne yerleştir
         if (!stack.isEmpty()) {
             setPedestalItem(world, pos, stack);
-
             if (!player.isCreative()) {
                 stack.decrement(1);
             }
