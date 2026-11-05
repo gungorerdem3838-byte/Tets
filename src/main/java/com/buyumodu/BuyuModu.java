@@ -1,10 +1,13 @@
 package com.buyumodu;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseEntityCallback;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -13,8 +16,13 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.function.Function;
 
@@ -22,13 +30,13 @@ public class BuyuModu implements ModInitializer {
     public static final String MOD_ID = "buyumodu";
 
     public static final Block EYE_PEDESTAL = registerBlock("eye_pedestal",
-            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+            settings -> new PedestalBlock(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     public static final Block PEARL_PEDESTAL = registerBlock("pearl_pedestal",
-            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+            settings -> new PedestalBlock(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
-            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+            settings -> new PedestalBlock(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
             RegistryKeys.ITEM_GROUP,
@@ -60,5 +68,33 @@ public class BuyuModu implements ModInitializer {
                             entries.add(EMERALD_PEDESTAL);
                         })
                         .build());
+
+        // Oyuncu doğrudan üstteki eşya çerçevesine sağ tıklarsa eşyayı geri ver (döndürmesini engelle)
+        UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (entity instanceof ItemFrameEntity frame && frame.getCommandTags().contains("buyumodu_pedestal_item")) {
+                if (!world.isClient()) {
+                    BlockPos pos = frame.getAttachedBlockPos().down();
+                    ItemStack held = frame.getHeldItemStack();
+                    if (!held.isEmpty()) {
+                        ItemStack giveBack = held.copy();
+                        if (!player.getInventory().insertStack(giveBack)) {
+                            ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, giveBack);
+                        }
+                    }
+                    frame.discard();
+                    world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                }
+                return ActionResult.SUCCESS;
+            }
+            return ActionResult.PASS;
+        });
+
+        // Oyuncu üstteki eşyaya sol tıklarsa çerçeveyi kırmasını engelle
+        AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+            if (entity instanceof ItemFrameEntity frame && frame.getCommandTags().contains("buyumodu_pedestal_item")) {
+                return ActionResult.FAIL;
+            }
+            return ActionResult.PASS;
+        });
     }
 }
