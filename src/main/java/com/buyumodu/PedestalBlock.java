@@ -125,7 +125,6 @@ public class PedestalBlock extends Block {
         Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(BuyuModu.KANAMA_ENCHANTMENT);
         if (bleedingOpt.isEmpty()) return;
 
-        // Zaten Kanama büyüsü varsa tekrar malzemeleri harcama
         if (EnchantmentHelper.getLevel(bleedingOpt.get(), centerItem) > 0) return;
 
         for (int[] offset : EMERALD_OFFSETS) {

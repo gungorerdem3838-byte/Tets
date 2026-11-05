@@ -22,12 +22,10 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -103,21 +101,14 @@ public class BuyuModu implements ModInitializer {
                             entries.add(PEARL_PEDESTAL);
                             entries.add(EMERALD_PEDESTAL);
 
-                            // Kreatif menüye hem özel Kanama Kitabını hem de örste basılabilir Büyülü Kitap halini ekle
                             ItemStack customBook = new ItemStack(KANAMA_BOOK);
-                            Optional<RegistryWrapper.Impl<Enchantment>> enchLookup = context.lookup().getOptional(RegistryKeys.ENCHANTMENT);
-                            if (enchLookup.isPresent()) {
-                                Optional<RegistryEntry.Reference<Enchantment>> kanamaRef = enchLookup.get().getOptional(KANAMA_ENCHANTMENT);
-                                if (kanamaRef.isPresent()) {
-                                    ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
-                                    builder.add(kanamaRef.get(), 1);
-                                    customBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
-
-                                    ItemStack vanillaEnchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
-                                    vanillaEnchantedBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
-                                    entries.add(vanillaEnchantedBook);
-                                }
-                            }
+                            context.lookup().getOptional(RegistryKeys.ENCHANTMENT)
+                                    .flatMap(reg -> reg.getOptional(KANAMA_ENCHANTMENT))
+                                    .ifPresent(kanamaRef -> {
+                                        ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+                                        builder.add(kanamaRef, 1);
+                                        customBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+                                    });
                             entries.add(customBook);
                         })
                         .build());
@@ -128,7 +119,7 @@ public class BuyuModu implements ModInitializer {
                 ItemStack weapon = attacker.getMainHandStack();
                 if (weapon.isEmpty()) return;
 
-                Registry<Enchantment> enchRegistry = entity.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+                Registry<Enchantment> enchRegistry = entity.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
                 Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(KANAMA_ENCHANTMENT);
 
                 if (bleedingOpt.isPresent() && EnchantmentHelper.getLevel(bleedingOpt.get(), weapon) > 0) {
@@ -154,7 +145,7 @@ public class BuyuModu implements ModInitializer {
                     else if (armorMaterial.equals("diamond")) chance -= 0.25;
                     else if (armorMaterial.equals("netherite")) chance -= 0.45;
 
-                    if (entity.getWorld().getRandom().nextDouble() < chance) {
+                    if (Math.random() < chance) {
                         entity.addStatusEffect(new StatusEffectInstance(
                                 BLEEDING_EFFECT,
                                 100, 0, false, true, true
