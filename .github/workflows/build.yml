@@ -1,21 +1,4 @@
-name: Otomatik Kur ve Derle (Fabric 1.21.11)
-
-on:
-  push:
-    branches: [ "main", "master" ]
-  workflow_dispatch:
-
-permissions:
-  contents: write
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Depoyu Cek
-        uses: actions/checkout@v4
-
-      - name: Tum Mod Dosyalarini Olustur
+    - name: Tum Mod Dosyalarini Olustur
         run: |
           mkdir -p "src/main/java/com/buyumodu"
           mkdir -p "src/main/resources/data/buyumodu/recipe"
@@ -98,17 +81,19 @@ jobs:
           package com.buyumodu;
 
           import net.fabricmc.api.ModInitializer;
-          import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+          import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
           import net.minecraft.block.AbstractBlock;
           import net.minecraft.block.Block;
           import net.minecraft.block.Blocks;
           import net.minecraft.item.BlockItem;
           import net.minecraft.item.Item;
-          import net.minecraft.item.ItemGroups;
+          import net.minecraft.item.ItemGroup;
+          import net.minecraft.item.ItemStack;
           import net.minecraft.registry.Registries;
           import net.minecraft.registry.Registry;
           import net.minecraft.registry.RegistryKey;
           import net.minecraft.registry.RegistryKeys;
+          import net.minecraft.text.Text;
           import net.minecraft.util.Identifier;
 
           import java.util.function.Function;
@@ -125,6 +110,11 @@ jobs:
               public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
                       settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
+              public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
+                      RegistryKeys.ITEM_GROUP,
+                      Identifier.of(MOD_ID, "buyu_group")
+              );
+
               private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory) {
                   Identifier id = Identifier.of(MOD_ID, name);
                   RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, id);
@@ -140,11 +130,16 @@ jobs:
 
               @Override
               public void onInitialize() {
-                  ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
-                      entries.add(EYE_PEDESTAL);
-                      entries.add(PEARL_PEDESTAL);
-                      entries.add(EMERALD_PEDESTAL);
-                  });
+                  Registry.register(Registries.ITEM_GROUP, BUYU_ITEM_GROUP,
+                          FabricItemGroup.builder()
+                                  .icon(() -> new ItemStack(EMERALD_PEDESTAL))
+                                  .displayName(Text.translatable("itemGroup.buyumodu.buyu_group"))
+                                  .entries((context, entries) -> {
+                                      entries.add(EYE_PEDESTAL);
+                                      entries.add(PEARL_PEDESTAL);
+                                      entries.add(EMERALD_PEDESTAL);
+                                  })
+                                  .build());
               }
           }
           EOF
@@ -228,6 +223,7 @@ jobs:
 
           cat << 'EOF' > src/main/resources/assets/buyumodu/lang/tr_tr.json
           {
+            "itemGroup.buyumodu.buyu_group": "Büyü Modu",
             "block.buyumodu.eye_pedestal": "Göz Sütunu",
             "block.buyumodu.pearl_pedestal": "İnci Sütunu",
             "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu"
@@ -236,6 +232,7 @@ jobs:
 
           cat << 'EOF' > src/main/resources/assets/buyumodu/lang/en_us.json
           {
+            "itemGroup.buyumodu.buyu_group": "Magic Mod",
             "block.buyumodu.eye_pedestal": "Eye Pedestal",
             "block.buyumodu.pearl_pedestal": "Pearl Pedestal",
             "block.buyumodu.emerald_pedestal": "Emerald Pedestal"
@@ -243,8 +240,8 @@ jobs:
           EOF
 
           for id in eye_pedestal pearl_pedestal emerald_pedestal; do
-            if [ "$id" = "eye_pedestal" ]; then tex="minecraft:item/ender_eye"; fi
-            if [ "$id" = "pearl_pedestal" ]; then tex="minecraft:item/ender_pearl"; fi
+            if [ "$id" = "eye_pedestal" ]; then tex="minecraft:block/oxidized_copper"; fi
+            if [ "$id" = "pearl_pedestal" ]; then tex="minecraft:block/dark_prismarine"; fi
             if [ "$id" = "emerald_pedestal" ]; then tex="minecraft:block/emerald_block"; fi
 
             cat << EOF > src/main/resources/data/buyumodu/loot_table/blocks/${id}.json
@@ -321,7 +318,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --staged --quiet || git commit -m "Fabric 1.21.11 dogrulanmis surumler"
+          git diff --staged --quiet || git commit -m "Doku duzeltmeleri ve yaratici sekmesi eklendi"
           git push
 
       - name: Java 21 Kur
@@ -345,3 +342,4 @@ jobs:
           path: |
             build/libs/*.jar
             !build/libs/*-sources.jar
+```
