@@ -4,7 +4,7 @@
     "particle": "minecraft:block/blackstone",
     "base": "minecraft:block/blackstone",
     "top": "minecraft:block/blackstone_top",
-    "core": "minecraft:item/ender_eye"
+    "core": "minecraft:block/oxidized_copper"
   },
   "elements": [
     {

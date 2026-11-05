@@ -1,17 +1,19 @@
 package com.buyumodu;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroups;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.function.Function;
@@ -20,13 +22,18 @@ public class BuyuModu implements ModInitializer {
     public static final String MOD_ID = "buyumodu";
 
     public static final Block EYE_PEDESTAL = registerBlock("eye_pedestal",
-  settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     public static final Block PEARL_PEDESTAL = registerBlock("pearl_pedestal",
-  settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
     public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
-  settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+            settings -> new Block(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+
+    public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
+            RegistryKeys.ITEM_GROUP,
+            Identifier.of(MOD_ID, "buyu_group")
+    );
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory) {
         Identifier id = Identifier.of(MOD_ID, name);
@@ -43,10 +50,15 @@ public class BuyuModu implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
-  entries.add(EYE_PEDESTAL);
-  entries.add(PEARL_PEDESTAL);
-  entries.add(EMERALD_PEDESTAL);
-        });
+        Registry.register(Registries.ITEM_GROUP, BUYU_ITEM_GROUP,
+                FabricItemGroup.builder()
+                        .icon(() -> new ItemStack(EMERALD_PEDESTAL))
+                        .displayName(Text.translatable("itemGroup.buyumodu.buyu_group"))
+                        .entries((context, entries) -> {
+                            entries.add(EYE_PEDESTAL);
+                            entries.add(PEARL_PEDESTAL);
+                            entries.add(EMERALD_PEDESTAL);
+                        })
+                        .build());
     }
 }
