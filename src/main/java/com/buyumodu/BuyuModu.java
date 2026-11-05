@@ -20,7 +20,6 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
@@ -33,7 +32,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.Random;
 import java.util.function.Function;
 
 public class BuyuModu implements ModInitializer {
@@ -92,7 +90,6 @@ public class BuyuModu implements ModInitializer {
                         })
                         .build());
 
-        // Kanama Efekti Uygulama Mantığı (Keskinlik ve Zırh Oranı Hesaplaması)
         ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
             if (source.getAttacker() instanceof LivingEntity attacker) {
                 ItemStack weapon = attacker.getMainHandStack();
@@ -117,7 +114,6 @@ public class BuyuModu implements ModInitializer {
                         } catch (Exception ignored) {}
                     }
 
-                    // Temel Şans: %50 + Keskinliğe göre artış
                     double chance = 0.50;
                     if (sharpnessLevel == 1) chance = 0.55;
                     else if (sharpnessLevel == 2) chance = 0.65;
@@ -125,7 +121,6 @@ public class BuyuModu implements ModInitializer {
                     else if (sharpnessLevel == 4) chance = 0.85;
                     else if (sharpnessLevel >= 5) chance = 0.95;
 
-                    // Hedefin tam zırh setine göre şansı düşür
                     String armorMaterial = getFullArmorMaterial(entity);
                     if (armorMaterial.equals("leather")) chance -= 0.00;
                     else if (armorMaterial.equals("gold")) chance -= 0.04;

@@ -3,11 +3,6 @@ package com.buyumodu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.ComponentChanges;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -40,21 +35,8 @@ public class PedestalBlock extends Block {
             Block.createCuboidShape(3.6, 12.0, 3.6, 12.4, 16.0, 12.4)
     );
 
-    // Yeşil Sütunlar (Zümrüt Sütunları) - 4 ana yön
-    private static final int[][] EMERALD_OFFSETS = {
-            {0, -4},
-            {-4, 0},
-            {4, 0},
-            {0, 4}
-    };
-
-    // Mavi Sütunlar (İnci Sütunları) - 4 çapraz köşe
-    private static final int[][] PEARL_OFFSETS = {
-            {-3, -3},
-            {3, -3},
-            {-3, 3},
-            {3, 3}
-    };
+    private static final int[][] EMERALD_OFFSETS = {{0, -4}, {-4, 0}, {4, 0}, {0, 4}};
+    private static final int[][] PEARL_OFFSETS = {{-3, -3}, {3, -3}, {-3, 3}, {3, 3}};
 
     public PedestalBlock(Settings settings) {
         super(settings);
@@ -124,30 +106,20 @@ public class PedestalBlock extends Block {
 
     private static void tryPerformRitual(World world, BlockPos centerPos) {
         ItemStack centerItem = getDisplayedItem(world, centerPos);
-        // Merkezde kılıç veya balta olmalı ve henüz kanama büyüsü olmamalı
         if (centerItem.isEmpty()) return;
 
-        boolean isWeaponOrAxe = centerItem.getItem().toString().contains("sword") || 
-                                centerItem.getItem().toString().contains("axe") ||
-                                centerItem.getItem().toString().contains("sword") ||
-                                centerItem.getItem().getTranslationKey().contains("sword") ||
-                                centerItem.getItem().getTranslationKey().contains("axe");
-
-        // 4 Yeşil (Zümrüt Sütunu) üstünde Zümrüt olmalı
         for (int[] offset : EMERALD_OFFSETS) {
             BlockPos p = centerPos.add(offset[0], 0, offset[1]);
             if (!world.getBlockState(p).isOf(BuyuModu.EMERALD_PEDESTAL)) return;
             if (!getDisplayedItem(world, p).isOf(Items.EMERALD)) return;
         }
 
-        // 4 Mavi (İnci Sütunu) üstünde Demir Külçesi olmalı
         for (int[] offset : PEARL_OFFSETS) {
             BlockPos p = centerPos.add(offset[0], 0, offset[1]);
             if (!world.getBlockState(p).isOf(BuyuModu.PEARL_PEDESTAL)) return;
             if (!getDisplayedItem(world, p).isOf(Items.IRON_INGOT)) return;
         }
 
-        // Ritüel Malzemelerini Tüket (Yeşil ve Mavilerdeki öğeleri sil)
         for (int[] offset : EMERALD_OFFSETS) {
             BlockPos p = centerPos.add(offset[0], 0, offset[1]);
             clearPedestalItem(world, p);
@@ -163,13 +135,11 @@ public class PedestalBlock extends Block {
             }
         }
 
-        // Merkezdeki silaha Kanama Büyüsünü Ekle
-        RegistryKey<Enchantment> bleedingKey = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(BuyuModu.MOD_ID, "kanama"));
+        RegistryKey<net.minecraft.enchantment.Enchantment> bleedingKey = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(BuyuModu.MOD_ID, "kanama"));
         world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(bleedingKey).ifPresent(entry -> {
             centerItem.addEnchantment(entry, 1);
         });
 
-        // Görsel efekt ve ses
         setPedestalItem(world, centerPos, centerItem);
         if (world instanceof ServerWorld sw) {
             sw.spawnParticles(ParticleTypes.TOTEM_OF_UNDYING, centerPos.getX() + 0.5, centerPos.getY() + 1.2, centerPos.getZ() + 0.5, 40, 0.3, 0.3, 0.3, 0.1);

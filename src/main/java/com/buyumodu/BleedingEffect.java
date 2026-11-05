@@ -14,7 +14,7 @@ public class BleedingEffect extends StatusEffect {
 
     @Override
     public boolean canApplyUpdateEffect(int duration, int amplifier) {
-        return duration % 20 == 0; // Her 1 saniyede bir tetiklenir (zehir gibi)
+        return duration % 20 == 0;
     }
 
     @Override
