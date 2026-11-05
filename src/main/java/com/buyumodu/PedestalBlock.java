@@ -3,13 +3,18 @@ package com.buyumodu;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -27,6 +32,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Optional;
 
 public class PedestalBlock extends Block {
     private static final VoxelShape SHAPE = VoxelShapes.union(
@@ -104,9 +110,23 @@ public class PedestalBlock extends Block {
         }
     }
 
+    public static boolean isCombatWeapon(ItemStack stack) {
+        if (stack.isEmpty()) return false;
+        if (stack.isIn(ItemTags.SWORDS) || stack.isIn(ItemTags.AXES)) return true;
+        String id = stack.getItem().toString().toLowerCase();
+        return id.contains("sword") || id.contains("axe") || id.contains("trident") || id.contains("mace");
+    }
+
     private static void tryPerformRitual(World world, BlockPos centerPos) {
         ItemStack centerItem = getDisplayedItem(world, centerPos);
-        if (centerItem.isEmpty()) return;
+        if (!isCombatWeapon(centerItem)) return;
+
+        Registry<Enchantment> enchRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+        Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(BuyuModu.KANAMA_ENCHANTMENT);
+        if (bleedingOpt.isEmpty()) return;
+
+        // Zaten Kanama büyüsü varsa tekrar malzemeleri harcama
+        if (EnchantmentHelper.getLevel(bleedingOpt.get(), centerItem) > 0) return;
 
         for (int[] offset : EMERALD_OFFSETS) {
             BlockPos p = centerPos.add(offset[0], 0, offset[1]);
@@ -135,12 +155,10 @@ public class PedestalBlock extends Block {
             }
         }
 
-        RegistryKey<net.minecraft.enchantment.Enchantment> bleedingKey = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(BuyuModu.MOD_ID, "kanama"));
-        world.getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(bleedingKey).ifPresent(entry -> {
-            centerItem.addEnchantment(entry, 1);
-        });
+        ItemStack enchantedWeapon = centerItem.copy();
+        enchantedWeapon.addEnchantment(bleedingOpt.get(), 1);
 
-        setPedestalItem(world, centerPos, centerItem);
+        setPedestalItem(world, centerPos, enchantedWeapon);
         if (world instanceof ServerWorld sw) {
             sw.spawnParticles(ParticleTypes.TOTEM_OF_UNDYING, centerPos.getX() + 0.5, centerPos.getY() + 1.2, centerPos.getZ() + 0.5, 40, 0.3, 0.3, 0.3, 0.1);
         }

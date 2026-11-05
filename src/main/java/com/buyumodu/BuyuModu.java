@@ -8,6 +8,8 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -20,18 +22,23 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 public class BuyuModu implements ModInitializer {
@@ -46,22 +53,31 @@ public class BuyuModu implements ModInitializer {
     public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
             settings -> new PedestalBlock(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
 
-    public static final StatusEffect BLEEDING = Registry.register(
+    public static final RegistryEntry<StatusEffect> BLEEDING_EFFECT = Registry.registerReference(
             Registries.STATUS_EFFECT,
             Identifier.of(MOD_ID, "bleeding"),
             new BleedingEffect()
     );
 
-    public static final Item KANAMA_BOOK = Registry.register(
-            Registries.ITEM,
-            Identifier.of(MOD_ID, "kanama_book"),
-            new Item(new Item.Settings().maxCount(1))
+    public static final RegistryKey<Enchantment> KANAMA_ENCHANTMENT = RegistryKey.of(
+            RegistryKeys.ENCHANTMENT,
+            Identifier.of(MOD_ID, "kanama")
     );
+
+    public static final Item KANAMA_BOOK = registerItem("kanama_book",
+            settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
 
     public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
             RegistryKeys.ITEM_GROUP,
             Identifier.of(MOD_ID, "buyu_group")
     );
+
+    private static Item registerItem(String name, Function<Item.Settings, Item> factory) {
+        Identifier id = Identifier.of(MOD_ID, name);
+        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
+        Item.Settings settings = new Item.Settings().registryKey(itemKey);
+        return Registry.register(Registries.ITEM, itemKey, factory.apply(settings));
+    }
 
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory) {
         Identifier id = Identifier.of(MOD_ID, name);
@@ -86,34 +102,43 @@ public class BuyuModu implements ModInitializer {
                             entries.add(EYE_PEDESTAL);
                             entries.add(PEARL_PEDESTAL);
                             entries.add(EMERALD_PEDESTAL);
-                            entries.add(KANAMA_BOOK);
+
+                            // Kreatif menüye hem özel Kanama Kitabını hem de örste basılabilir Büyülü Kitap halini ekle
+                            ItemStack customBook = new ItemStack(KANAMA_BOOK);
+                            Optional<RegistryWrapper.Impl<Enchantment>> enchLookup = context.lookup().getOptional(RegistryKeys.ENCHANTMENT);
+                            if (enchLookup.isPresent()) {
+                                Optional<RegistryEntry.Reference<Enchantment>> kanamaRef = enchLookup.get().getOptional(KANAMA_ENCHANTMENT);
+                                if (kanamaRef.isPresent()) {
+                                    ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+                                    builder.add(kanamaRef.get(), 1);
+                                    customBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+
+                                    ItemStack vanillaEnchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
+                                    vanillaEnchantedBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+                                    entries.add(vanillaEnchantedBook);
+                                }
+                            }
+                            entries.add(customBook);
                         })
                         .build());
 
-        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+        ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
+            if (blocked) return;
             if (source.getAttacker() instanceof LivingEntity attacker) {
                 ItemStack weapon = attacker.getMainHandStack();
-                RegistryKey<Enchantment> bleedingKey = RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "kanama"));
-                
-                boolean hasBleeding = false;
-                var optionalEnch = attacker.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(bleedingKey);
-                if (optionalEnch.isPresent()) {
-                    if (EnchantmentHelper.getLevel(optionalEnch.get(), weapon) > 0) {
-                        hasBleeding = true;
-                    }
-                }
+                if (weapon.isEmpty()) return;
 
-                if (hasBleeding) {
+                Registry<Enchantment> enchRegistry = entity.getWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+                Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(KANAMA_ENCHANTMENT);
+
+                if (bleedingOpt.isPresent() && EnchantmentHelper.getLevel(bleedingOpt.get(), weapon) > 0) {
                     int sharpnessLevel = 0;
-                    if (optionalEnch.isPresent()) {
-                        try {
-                            var sharpnessEntry = attacker.getWorld().getRegistryManager().get(RegistryKeys.ENCHANTMENT).getEntry(Enchantments.SHARPNESS);
-                            if (sharpnessEntry.isPresent()) {
-                                sharpnessLevel = EnchantmentHelper.getLevel(sharpnessEntry.get(), weapon);
-                            }
-                        } catch (Exception ignored) {}
+                    Optional<RegistryEntry.Reference<Enchantment>> sharpOpt = enchRegistry.getOptional(Enchantments.SHARPNESS);
+                    if (sharpOpt.isPresent()) {
+                        sharpnessLevel = EnchantmentHelper.getLevel(sharpOpt.get(), weapon);
                     }
 
+                    // Normalde %50, Keskinlik 1-5 ile %55, %65, %75, %85, %95
                     double chance = 0.50;
                     if (sharpnessLevel == 1) chance = 0.55;
                     else if (sharpnessLevel == 2) chance = 0.65;
@@ -121,6 +146,7 @@ public class BuyuModu implements ModInitializer {
                     else if (sharpnessLevel == 4) chance = 0.85;
                     else if (sharpnessLevel >= 5) chance = 0.95;
 
+                    // Tam set zırh direnci
                     String armorMaterial = getFullArmorMaterial(entity);
                     if (armorMaterial.equals("leather")) chance -= 0.00;
                     else if (armorMaterial.equals("gold")) chance -= 0.04;
@@ -128,15 +154,14 @@ public class BuyuModu implements ModInitializer {
                     else if (armorMaterial.equals("diamond")) chance -= 0.25;
                     else if (armorMaterial.equals("netherite")) chance -= 0.45;
 
-                    if (Math.random() < chance) {
+                    if (entity.getWorld().getRandom().nextDouble() < chance) {
                         entity.addStatusEffect(new StatusEffectInstance(
-                                net.minecraft.registry.entry.RegistryEntry.of(BLEEDING),
+                                BLEEDING_EFFECT,
                                 100, 0, false, true, true
                         ));
                     }
                 }
             }
-            return true;
         });
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
@@ -177,10 +202,10 @@ public class BuyuModu implements ModInitializer {
             return "none";
         }
 
-        String b = boots.getItem().toString();
-        String l = leggings.getItem().toString();
-        String c = chest.getItem().toString();
-        String h = helmet.getItem().toString();
+        String b = boots.getItem().toString().toLowerCase();
+        String l = leggings.getItem().toString().toLowerCase();
+        String c = chest.getItem().toString().toLowerCase();
+        String h = helmet.getItem().toString().toLowerCase();
 
         if (b.contains("leather") && l.contains("leather") && c.contains("leather") && h.contains("leather")) return "leather";
         if (b.contains("golden") && l.contains("golden") && c.contains("golden") && h.contains("golden")) return "gold";
