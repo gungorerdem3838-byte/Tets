@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
@@ -20,7 +19,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -130,7 +128,7 @@ public class PedestalBlock extends Block {
         for (int[] offset : EMERALD_OFFSETS) {
             BlockPos p = centerPos.add(offset[0], 0, offset[1]);
             if (!world.getBlockState(p).isOf(BuyuModu.EMERALD_PEDESTAL)) return;
-            if (!getDisplayedItem(world, p).isOf(Items.EMERALD)) return;
+            if (!getDisplayedItem(world, p).isOf(Items.LAPIS_LAZULI)) return;
         }
 
         for (int[] offset : PEARL_OFFSETS) {
