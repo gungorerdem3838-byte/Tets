@@ -62,7 +62,15 @@ public class BuyuModu implements ModInitializer {
             Identifier.of(MOD_ID, "kanama")
     );
 
+    public static final RegistryKey<Enchantment> CAN_CALMA_ENCHANTMENT = RegistryKey.of(
+            RegistryKeys.ENCHANTMENT,
+            Identifier.of(MOD_ID, "can_calma")
+    );
+
     public static final Item KANAMA_BOOK = registerItem("kanama_book",
+            settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
+
+    public static final Item CAN_CALMA_BOOK = registerItem("can_calma_book",
             settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
 
     public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
@@ -110,6 +118,19 @@ public class BuyuModu implements ModInitializer {
                                         customBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
                                     });
                             entries.add(customBook);
+
+                            for (int lvl = 1; lvl <= 3; lvl++) {
+                                final int level = lvl;
+                                ItemStack canCalmaBook = new ItemStack(CAN_CALMA_BOOK);
+                                context.lookup().getOptional(RegistryKeys.ENCHANTMENT)
+                                        .flatMap(reg -> reg.getOptional(CAN_CALMA_ENCHANTMENT))
+                                        .ifPresent(canCalmaRef -> {
+                                            ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+                                            builder.add(canCalmaRef, level);
+                                            canCalmaBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+                                        });
+                                entries.add(canCalmaBook);
+                            }
                         })
                         .build());
 
@@ -120,8 +141,9 @@ public class BuyuModu implements ModInitializer {
                 if (weapon.isEmpty()) return;
 
                 Registry<Enchantment> enchRegistry = entity.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
-                Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(KANAMA_ENCHANTMENT);
 
+                // 1. Kanama Buyusu Kontrolu
+                Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(KANAMA_ENCHANTMENT);
                 if (bleedingOpt.isPresent() && EnchantmentHelper.getLevel(bleedingOpt.get(), weapon) > 0) {
                     int sharpnessLevel = 0;
                     Optional<RegistryEntry.Reference<Enchantment>> sharpOpt = enchRegistry.getOptional(Enchantments.SHARPNESS);
@@ -129,7 +151,6 @@ public class BuyuModu implements ModInitializer {
                         sharpnessLevel = EnchantmentHelper.getLevel(sharpOpt.get(), weapon);
                     }
 
-                    // Normalde %50, Keskinlik 1-5 ile %55, %65, %75, %85, %95
                     double chance = 0.50;
                     if (sharpnessLevel == 1) chance = 0.55;
                     else if (sharpnessLevel == 2) chance = 0.65;
@@ -137,7 +158,6 @@ public class BuyuModu implements ModInitializer {
                     else if (sharpnessLevel == 4) chance = 0.85;
                     else if (sharpnessLevel >= 5) chance = 0.95;
 
-                    // Tam set zırh direnci
                     String armorMaterial = getFullArmorMaterial(entity);
                     if (armorMaterial.equals("leather")) chance -= 0.00;
                     else if (armorMaterial.equals("gold")) chance -= 0.04;
@@ -150,6 +170,34 @@ public class BuyuModu implements ModInitializer {
                                 BLEEDING_EFFECT,
                                 100, 0, false, true, true
                         ));
+                    }
+                }
+
+                // 2. Can Calma Buyusu Kontrolu
+                Optional<RegistryEntry.Reference<Enchantment>> lifestealOpt = enchRegistry.getOptional(CAN_CALMA_ENCHANTMENT);
+                if (lifestealOpt.isPresent()) {
+                    int lifestealLevel = EnchantmentHelper.getLevel(lifestealOpt.get(), weapon);
+                    if (lifestealLevel > 0 && damageTaken > 0) {
+                        double chance = 0.0;
+                        float stealPercent = 0.0f;
+
+                        if (lifestealLevel == 1) {
+                            chance = 0.10;
+                            stealPercent = 0.30f;
+                        } else if (lifestealLevel == 2) {
+                            chance = 0.20;
+                            stealPercent = 0.40f;
+                        } else if (lifestealLevel >= 3) {
+                            chance = 0.30;
+                            stealPercent = 0.50f;
+                        }
+
+                        if (Math.random() < chance) {
+                            float healAmount = damageTaken * stealPercent;
+                            if (healAmount > 0.0f) {
+                                attacker.heal(healAmount);
+                            }
+                        }
                     }
                 }
             }

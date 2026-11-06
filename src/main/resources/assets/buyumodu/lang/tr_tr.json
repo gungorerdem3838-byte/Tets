@@ -4,6 +4,8 @@
   "block.buyumodu.pearl_pedestal": "İnci Sütunu",
   "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu",
   "item.buyumodu.kanama_book": "Kanama Büyü Kitabı",
+  "item.buyumodu.can_calma_book": "Can Çalma Büyü Kitabı",
   "enchantment.buyumodu.kanama": "Kanama",
+  "enchantment.buyumodu.can_calma": "Can Çalma",
   "effect.buyumodu.bleeding": "Kanama"
 }

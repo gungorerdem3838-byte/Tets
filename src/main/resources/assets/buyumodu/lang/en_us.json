@@ -4,6 +4,8 @@
   "block.buyumodu.pearl_pedestal": "Pearl Pedestal",
   "block.buyumodu.emerald_pedestal": "Emerald Pedestal",
   "item.buyumodu.kanama_book": "Bleeding Enchantment Book",
+  "item.buyumodu.can_calma_book": "Lifesteal Enchantment Book",
   "enchantment.buyumodu.kanama": "Bleeding",
+  "enchantment.buyumodu.can_calma": "Lifesteal",
   "effect.buyumodu.bleeding": "Bleeding"
 }
