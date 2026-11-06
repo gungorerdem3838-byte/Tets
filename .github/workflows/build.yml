@@ -272,12 +272,322 @@ jobs:
           }
           EOF
 
-          echo "cGFja2FnZSBjb20uYnV5dW1vZHU7CgppbXBvcnQgbmV0LmZhYnJpY21jLmFwaS5Nb2RJbml0aWFsaXplcjsKaW1wb3J0IG5ldC5mYWJyaWNtYy5mYWJyaWMuYXBpLmVudGl0eS5ldmVudC52MS5TZXJ2ZXJMaXZpbmdFbnRpdHlFdmVudHM7CmltcG9ydCBuZXQuZmFicmljbWMuZmFicmljLmFwaS5ldmVudC5wbGF5ZXIuQXR0YWNrRW50aXR5Q2FsbGJhY2s7CmltcG9ydCBuZXQuZmFicmljbWMuZmFicmljLmFwaS5ldmVudC5wbGF5ZXIuVXNlRW50aXR5Q2FsbGJhY2s7CmltcG9ydCBuZXQuZmFicmljbWMuZmFicmljLmFwaS5pdGVtZ3JvdXAudjEuRmFicmljSXRlbUdyb3VwOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5ibG9jay5BYnN0cmFjdEJsb2NrOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5ibG9jay5CbG9jazsKaW1wb3J0IG5ldC5taW5lY3JhZnQuYmxvY2suQmxvY2tzOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5jb21wb25lbnQuRGF0YUNvbXBvbmVudFR5cGVzOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5jb21wb25lbnQudHlwZS5JdGVtRW5jaGFudG1lbnRzQ29tcG9uZW50OwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5lbmNoYW50bWVudC5FbmNoYW50bWVudDsKaW1wb3J0IG5ldC5taW5lY3JhZnQuZW5jaGFudG1lbnQuRW5jaGFudG1lbnRIZWxwZXI7CmltcG9ydCBuZXQubWluZWNyYWZ0LmVuY2hhbnRtZW50LkVuY2hhbnRtZW50czsKaW1wb3J0IG5ldC5taW5lY3JhZnQuZW50aXR5LkVxdWlwbWVudFNsb3Q7CmltcG9ydCBuZXQubWluZWNyYWZ0LmVudGl0eS5MaXZpbmdFbnRpdHk7CmltcG9ydCBuZXQubWluZWNyYWZ0LmVudGl0eS5kZWNvcmF0aW9uLkl0ZW1GcmFtZUVudGl0eTsKaW1wb3J0IG5ldC5taW5lY3JhZnQuZW50aXR5LmVmZmVjdC5TdGF0dXNFZmZlY3Q7CmltcG9ydCBuZXQubWluZWNyYWZ0LmVudGl0eS5lZmZlY3QuU3RhdHVzRWZmZWN0SW5zdGFuY2U7CmltcG9ydCBuZXQubWluZWNyYWZ0Lml0ZW0uQmxvY2tJdGVtOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5pdGVtLkl0ZW07CmltcG9ydCBuZXQubWluZWNyYWZ0Lml0ZW0uSXRlbUdyb3VwOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5pdGVtLkl0ZW1TdGFjazsKaW1wb3J0IG5ldC5taW5lY3JhZnQucmVnaXN0cnkuUmVnaXN0cmllczsKaW1wb3J0IG5ldC5taW5lY3JhZnQucmVnaXN0cnkuUmVnaXN0cnk7CmltcG9ydCBuZXQubWluZWNyYWZ0LnJlZ2lzdHJ5LlJlZ2lzdHJ5S2V5OwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5yZWdpc3RyeS5SZWdpc3RyeUtleXM7CmltcG9ydCBuZXQubWluZWNyYWZ0LnJlZ2lzdHJ5LmVudHJ5LlJlZ2lzdHJ5RW50cnk7CmltcG9ydCBuZXQubWluZWNyYWZ0LnNvdW5kLlNvdW5kQ2F0ZWdvcnk7CmltcG9ydCBuZXQubWluZWNyYWZ0LnNvdW5kLlNvdW5kRXZlbnRzOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC50ZXh0LlRleHQ7CmltcG9ydCBuZXQubWluZWNyYWZ0LnV0aWwuQWN0aW9uUmVzdWx0OwppbXBvcnQgbmV0Lm1pbmVjcmFmdC51dGlsLklkZW50aWZpZXI7CmltcG9ydCBuZXQubWluZWNyYWZ0LnV0aWwuSXRlbVNjYXR0ZXJlcjsKaW1wb3J0IG5ldC5taW5lY3JhZnQudXRpbC5SYXJpdHk7CmltcG9ydCBuZXQubWluZWNyYWZ0LnV0aWwubWF0aC5CbG9ja1BvczsKCmltcG9ydCBqYXZhLnV0aWwuT3B0aW9uYWw7CmltcG9ydCBqYXZhLnV0aWwuZnVuY3Rpb24uRnVuY3Rpb247CgpwdWJsaWMgY2xhc3MgQnV5dU1vZHUgaW1wbGVtZW50cyBNb2RJbml0aWFsaXplciB7CiAgICBwdWJsaWMgc3RhdGljIGZpbmFsIFN0cmluZyBNT0RfSUQgPSAiYnV5dW1vZHUiOwoKICAgIHB1YmxpYyBzdGF0aWMgZmluYWwgQmxvY2sgRVlFX1BFREVTVEFMID0gcmVnaXN0ZXJCbG9jaygiZXllX3BlZGVzdGFsIiwKICAgICAgICAgICAgc2V0dGluZ3MgLT4gbmV3IFBlZGVzdGFsQmxvY2soc2V0dGluZ3Muc3RyZW5ndGgoMi4wZiwgNi4wZikucmVxdWlyZXNUb29sKCkubm9uT3BhcXVlKCkpKTsKCiAgICBwdWJsaWMgc3RhdGljIGZpbmFsIEJsb2NrIFBFQVJMX1BFREVTVEFMID0gcmVnaXN0ZXJCbG9jaygicGVhcmxfcGVkZXN0YWwiLAogICAgICAgICAgICBzZXR0aW5ncyAtPiBuZXcgUGVkZXN0YWxCbG9jayhzZXR0aW5ncy5zdHJlbmd0aCgyLjBmLCA2LjBmKS5yZXF1aXJlc1Rvb2woKS5ub25PcGFxdWUoKSkpOwoKICAgIHB1YmxpYyBzdGF0aWMgZmluYWwgQmxvY2sgRU1FUkFMRF9QRURFU1RBTCA9IHJlZ2lzdGVyQmxvY2soImVtZXJhbGRfcGVkZXN0YWwiLAogICAgICAgICAgICBzZXR0aW5ncyAtPiBuZXcgUGVkZXN0YWxCbG9jayhzZXR0aW5ncy5zdHJlbmd0aCgyLjBmLCA2LjBmKS5yZXF1aXJlc1Rvb2woKS5ub25PcGFxdWUoKSkpOwoKICAgIHB1YmxpYyBzdGF0aWMgZmluYWwgUmVnaXN0cnlFbnRyeTxTdGF0dXNFZmZlY3Q+IEJMRUVESU5HX0VGRkVDVCA9IFJlZ2lzdHJ5LnJlZ2lzdGVyUmVmZXJlbmNlKAogICAgICAgICAgICBSZWdpc3RyaWVzLlNUQVRVU19FRkZFQ1QsCiAgICAgICAgICAgIElkZW50aWZpZXIub2YoTU9EX0lELCAiYmxlZWRpbmciKSwKICAgICAgICAgICAgbmV3IEJsZWVkaW5nRWZmZWN0KCkKICAgICk7CgogICAgcHVibGljIHN0YXRpYyBmaW5hbCBSZWdpc3RyeUtleTxFbmNoYW50bWVudD4gS0FOQU1BX0VOQ0hBTlRNRU5UID0gUmVnaXN0cnlLZXkub2YoCiAgICAgICAgICAgIFJlZ2lzdHJ5S2V5cy5FTkNIQU5UTUVOVCwKICAgICAgICAgICAgSWRlbnRpZmllci5vZihNT0RfSUQsICJrYW5hbWEiKQogICAgKTsKCiAgICBwdWJsaWMgc3RhdGljIGZpbmFsIEl0ZW0gS0FOQU1BX0JPT0sgPSByZWdpc3Rlckl0ZW0oImthbmFtYV9ib29rIiwKICAgICAgICAgICAgc2V0dGluZ3MgLT4gbmV3IEl0ZW0oc2V0dGluZ3MubWF4Q291bnQoMSkucmFyaXR5KFJhcml0eS5SQVJFKS5jb21wb25lbnQoRGF0YUNvbXBvbmVudFR5cGVzLkVOQ0hBTlRNRU5UX0dMSU5UX09WRVJSSURFLCB0cnVlKSkpOwoKICAgIHB1YmxpYyBzdGF0aWMgZmluYWwgUmVnaXN0cnlLZXk8SXRlbUdyb3VwPiBCVVlVX0lURU1fR1JPVVAgPSBSZWdpc3RyeUtleS5vZigKICAgICAgICAgICAgUmVnaXN0cnlLZXlzLklURU1fR1JPVVAsCiAgICAgICAgICAgIElkZW50aWZpZXIub2YoTU9EX0lELCAiYnV5dV9ncm91cCIpCiAgICApOwoKICAgIHByaXZhdGUgc3RhdGljIEl0ZW0gcmVnaXN0ZXJJdGVtKFN0cmluZyBuYW1lLCBGdW5jdGlvbjxJdGVtLlNldHRpbmdzLCBJdGVtPiBmYWN0b3J5KSB7CiAgICAgICAgSWRlbnRpZmllciBpZCA9IElkZW50aWZpZXIub2YoTU9EX0lELCBuYW1lKTsKICAgICAgICBSZWdpc3RyeUtleTxJdGVtPiBpdGVtS2V5ID0gUmVnaXN0cnlLZXkub2YoUmVnaXN0cnlLZXlzLklURU0sIGlkKTsKICAgICAgICBJdGVtLlNldHRpbmdzIHNldHRpbmdzID0gbmV3IEl0ZW0uU2V0dGluZ3MoKS5yZWdpc3RyeUtleShpdGVtS2V5KTsKICAgICAgICByZXR1cm4gUmVnaXN0cnkucmVnaXN0ZXIoUmVnaXN0cmllcy5JVEVNLCBpdGVtS2V5LCBmYWN0b3J5LmFwcGx5KHNldHRpbmdzKSk7CiAgICB9CgogICAgcHJpdmF0ZSBzdGF0aWMgQmxvY2sgcmVnaXN0ZXJCbG9jayhTdHJpbmcgbmFtZSwgRnVuY3Rpb248QWJzdHJhY3RCbG9jay5TZXR0aW5ncywgQmxvY2s+IGZhY3RvcnkpIHsKICAgICAgICBJZGVudGlmaWVyIGlkID0gSWRlbnRpZmllci5vZihNT0RfSUQsIG5hbWUpOwogICAgICAgIFJlZ2lzdHJ5S2V5PEJsb2NrPiBibG9ja0tleSA9IFJlZ2lzdHJ5S2V5Lm9mKFJlZ2lzdHJ5S2V5cy5CTE9DSywgaWQpOwogICAgICAgIEFic3RyYWN0QmxvY2suU2V0dGluZ3Mgc2V0dGluZ3MgPSBBYnN0cmFjdEJsb2NrLlNldHRpbmdzLmNvcHkoQmxvY2tzLkJMQUNLU1RPTkUpLnJlZ2lzdHJ5S2V5KGJsb2NrS2V5KTsKICAgICAgICBCbG9jayBibG9jayA9IFJlZ2lzdHJ5LnJlZ2lzdGVyKFJlZ2lzdHJpZXMuQkxPQ0ssIGJsb2NrS2V5LCBmYWN0b3J5LmFwcGx5KHNldHRpbmdzKSk7CgogICAgICAgIFJlZ2lzdHJ5S2V5PEl0ZW0+IGl0ZW1LZXkgPSBSZWdpc3RyeUtleS5vZihSZWdpc3RyeUtleXMuSVRFTSwgaWQpOwogICAgICAgIEl0ZW0uU2V0dGluZ3MgaXRlbVNldHRpbmdzID0gbmV3IEl0ZW0uU2V0dGluZ3MoKS51c2VCbG9ja1ByZWZpeGVkVHJhbnNsYXRpb25LZXkoKS5yZWdpc3RyeUtleShpdGVtS2V5KTsKICAgICAgICBSZWdpc3RyeS5yZWdpc3RlcihSZWdpc3RyaWVzLklURU0sIGl0ZW1LZXksIG5ldyBCbG9ja0l0ZW0oYmxvY2ssIGl0ZW1TZXR0aW5ncykpOwoKICAgICAgICByZXR1cm4gYmxvY2s7CiAgICB9CgogICAgQE92ZXJyaWRlCiAgICBwdWJsaWMgdm9pZCBvbkluaXRpYWxpemUoKSB7CiAgICAgICAgUmVnaXN0cnkucmVnaXN0ZXIoUmVnaXN0cmllcy5JVEVNX0dST1VQLCBCVVlVX0lURU1fR1JPVVAsCiAgICAgICAgICAgICAgICBGYWJyaWNJdGVtR3JvdXAuYnVpbGRlcigpCiAgICAgICAgICAgICAgICAgICAgICAgIC5pY29uKCgpIC0+IG5ldyBJdGVtU3RhY2soS0FOQU1BX0JPT0spKQogICAgICAgICAgICAgICAgICAgICAgICAuZGlzcGxheU5hbWUoVGV4dC50cmFuc2xhdGFibGUoIml0ZW1Hcm91cC5idXl1bW9kdS5idXl1X2dyb3VwIikpCiAgICAgICAgICAgICAgICAgICAgICAgIC5lbnRyaWVzKChjb250ZXh0LCBlbnRyaWVzKSAtPiB7CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBlbnRyaWVzLmFkZChFWUVfUEVERVNUQUwpOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgZW50cmllcy5hZGQoUEVBUkxfUEVERVNUQUwpOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgZW50cmllcy5hZGQoRU1FUkFMRF9QRURFU1RBTCk7CgogICAgICAgICAgICAgICAgICAgICAgICAgICAgSXRlbVN0YWNrIGN1c3RvbUJvb2sgPSBuZXcgSXRlbVN0YWNrKEtBTkFNQV9CT09LKTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnRleHQubG9va3VwKCkuZ2V0T3B0aW9uYWwoUmVnaXN0cnlLZXlzLkVOQ0hBTlRNRU5UKQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAuZmxhdE1hcChyZWcgLT4gcmVnLmdldE9wdGlvbmFsKEtBTkFNQV9FTkNIQU5UTUVOVCkpCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC5pZlByZXNlbnQoa2FuYW1hUmVmIC0+IHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEl0ZW1FbmNoYW50bWVudHNDb21wb25lbnQuQnVpbGRlciBidWlsZGVyID0gbmV3IEl0ZW1FbmNoYW50bWVudHNDb21wb25lbnQuQnVpbGRlcihJdGVtRW5jaGFudG1lbnRzQ29tcG9uZW50LkRFRkFVTFQpOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYnVpbGRlci5hZGQoa2FuYW1hUmVmLCAxKTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGN1c3RvbUJvb2suc2V0KERhdGFDb21wb25lbnRUeXBlcy5TVE9SRURfRU5DSEFOVE1FTlRTLCBidWlsZGVyLmJ1aWxkKCkpOwogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB9KTsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVudHJpZXMuYWRkKGN1c3RvbUJvb2spOwogICAgICAgICAgICAgICAgICAgICAgICB9KQogICAgICAgICAgICAgICAgICAgICAgICAuYnVpbGQoKSk7CgogICAgICAgIFNlcnZlckxpdmluZ0VudGl0eUV2ZW50cy5BRlRFUl9EQU1BR0UucmVnaXN0ZXIoKGVudGl0eSwgc291cmNlLCBiYXNlRGFtYWdlVGFrZW4sIGRhbWFnZVRha2VuLCBibG9ja2VkKSAtPiB7CiAgICAgICAgICAgIGlmIChibG9ja2VkKSByZXR1cm47CiAgICAgICAgICAgIGlmIChzb3VyY2UuZ2V0QXR0YWNrZXIoKSBpbnN0YW5jZW9mIExpdmluZ0VudGl0eSBhdHRhY2tlcikgewogICAgICAgICAgICAgICAgSXRlbVN0YWNrIHdlYXBvbiA9IGF0dGFja2VyLmdldE1haW5IYW5kU3RhY2soKTsKICAgICAgICAgICAgICAgIGlmICh3ZWFwb24uaXNFbXB0eSgpKSByZXR1cm47CgogICAgICAgICAgICAgICAgUmVnaXN0cnk8RW5jaGFudG1lbnQ+IGVuY2hSZWdpc3RyeSA9IGVudGl0eS5nZXRFbnRpdHlXb3JsZCgpLmdldFJlZ2lzdHJ5TWFuYWdlcigpLmdldE9yVGhyb3coUmVnaXN0cnlLZXlzLkVOQ0hBTlRNRU5UKTsKICAgICAgICAgICAgICAgIE9wdGlvbmFsPFJlZ2lzdHJ5RW50cnkuUmVmZXJlbmNlPEVuY2hhbnRtZW50Pj4gYmxlZWRpbmdPcHQgPSBlbmNoUmVnaXN0cnkuZ2V0T3B0aW9uYWwoS0FOQU1BX0VOQ0hBTlRNRU5UKTsKCiAgICAgICAgICAgICAgICBpZiAoYmxlZWRpbmdPcHQuaXNQcmVzZW50KCkgJiYgRW5jaGFudG1lbnRIZWxwZXIuZ2V0TGV2ZWwoYmxlZWRpbmdPcHQuZ2V0KCksIHdlYXBvbikgPiAwKSB7CiAgICAgICAgICAgICAgICAgICAgaW50IHNoYXJwbmVzc0xldmVsID0gMDsKICAgICAgICAgICAgICAgICAgICBPcHRpb25hbDxSZWdpc3RyeUVudHJ5LlJlZmVyZW5jZTxFbmNoYW50bWVudD4+IHNoYXJwT3B0ID0gZW5jaFJlZ2lzdHJ5LmdldE9wdGlvbmFsKEVuY2hhbnRtZW50cy5TSEFSUE5FU1MpOwogICAgICAgICAgICAgICAgICAgIGlmIChzaGFycE9wdC5pc1ByZXNlbnQoKSkgewogICAgICAgICAgICAgICAgICAgICAgICBzaGFycG5lc3NMZXZlbCA9IEVuY2hhbnRtZW50SGVscGVyLmdldExldmVsKHNoYXJwT3B0LmdldCgpLCB3ZWFwb24pOwogICAgICAgICAgICAgICAgICAgIH0KCiAgICAgICAgICAgICAgICAgICAgLy8gTm9ybWFsZGUgJTUwLCBLZXNraW5saWsgMS01IGlsZSAlNTUsICU2NSwgJTc1LCAlODUsICU5NQogICAgICAgICAgICAgICAgICAgIGRvdWJsZSBjaGFuY2UgPSAwLjUwOwogICAgICAgICAgICAgICAgICAgIGlmIChzaGFycG5lc3NMZXZlbCA9PSAxKSBjaGFuY2UgPSAwLjU1OwogICAgICAgICAgICAgICAgICAgIGVsc2UgaWYgKHNoYXJwbmVzc0xldmVsID09IDIpIGNoYW5jZSA9IDAuNjU7CiAgICAgICAgICAgICAgICAgICAgZWxzZSBpZiAoc2hhcnBuZXNzTGV2ZWwgPT0gMykgY2hhbmNlID0gMC43NTsKICAgICAgICAgICAgICAgICAgICBlbHNlIGlmIChzaGFycG5lc3NMZXZlbCA9PSA0KSBjaGFuY2UgPSAwLjg1OwogICAgICAgICAgICAgICAgICAgIGVsc2UgaWYgKHNoYXJwbmVzc0xldmVsID49IDUpIGNoYW5jZSA9IDAuOTU7CgogICAgICAgICAgICAgICAgICAgIC8vIFRhbSBzZXQgesSxcmggZGlyZW5jaQogICAgICAgICAgICAgICAgICAgIFN0cmluZyBhcm1vck1hdGVyaWFsID0gZ2V0RnVsbEFybW9yTWF0ZXJpYWwoZW50aXR5KTsKICAgICAgICAgICAgICAgICAgICBpZiAoYXJtb3JNYXRlcmlhbC5lcXVhbHMoImxlYXRoZXIiKSkgY2hhbmNlIC09IDAuMDA7CiAgICAgICAgICAgICAgICAgICAgZWxzZSBpZiAoYXJtb3JNYXRlcmlhbC5lcXVhbHMoImdvbGQiKSkgY2hhbmNlIC09IDAuMDQ7CiAgICAgICAgICAgICAgICAgICAgZWxzZSBpZiAoYXJtb3JNYXRlcmlhbC5lcXVhbHMoImlyb24iKSkgY2hhbmNlIC09IDAuMTA7CiAgICAgICAgICAgICAgICAgICAgZWxzZSBpZiAoYXJtb3JNYXRlcmlhbC5lcXVhbHMoImRpYW1vbmQiKSkgY2hhbmNlIC09IDAuMjU7CiAgICAgICAgICAgICAgICAgICAgZWxzZSBpZiAoYXJtb3JNYXRlcmlhbC5lcXVhbHMoIm5ldGhlcml0ZSIpKSBjaGFuY2UgLT0gMC40NTsKCiAgICAgICAgICAgICAgICAgICAgaWYgKE1hdGgucmFuZG9tKCkgPCBjaGFuY2UpIHsKICAgICAgICAgICAgICAgICAgICAgICAgZW50aXR5LmFkZFN0YXR1c0VmZmVjdChuZXcgU3RhdHVzRWZmZWN0SW5zdGFuY2UoCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgQkxFRURJTkdfRUZGRUNULAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEwMCwgMCwgZmFsc2UsIHRydWUsIHRydWUKICAgICAgICAgICAgICAgICAgICAgICAgKSk7CiAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgfQogICAgICAgICAgICB9CiAgICAgICAgfSk7CgogICAgICAgIFVzZUVudGl0eUNhbGxiYWNrLkVWRU5ULnJlZ2lzdGVyKChwbGF5ZXIsIHdvcmxkLCBoYW5kLCBlbnRpdHksIGhpdFJlc3VsdCkgLT4gewogICAgICAgICAgICBpZiAoZW50aXR5IGluc3RhbmNlb2YgSXRlbUZyYW1lRW50aXR5IGZyYW1lICYmIGZyYW1lLmdldENvbW1hbmRUYWdzKCkuY29udGFpbnMoImJ1eXVtb2R1X3BlZGVzdGFsX2l0ZW0iKSkgewogICAgICAgICAgICAgICAgaWYgKCF3b3JsZC5pc0NsaWVudCgpKSB7CiAgICAgICAgICAgICAgICAgICAgQmxvY2tQb3MgcG9zID0gZnJhbWUuZ2V0QXR0YWNoZWRCbG9ja1BvcygpLmRvd24oKTsKICAgICAgICAgICAgICAgICAgICBJdGVtU3RhY2sgaGVsZCA9IGZyYW1lLmdldEhlbGRJdGVtU3RhY2soKTsKICAgICAgICAgICAgICAgICAgICBpZiAoIWhlbGQuaXNFbXB0eSgpKSB7CiAgICAgICAgICAgICAgICAgICAgICAgIEl0ZW1TdGFjayBnaXZlQmFjayA9IGhlbGQuY29weSgpOwogICAgICAgICAgICAgICAgICAgICAgICBpZiAoIXBsYXllci5nZXRJbnZlbnRvcnkoKS5pbnNlcnRTdGFjayhnaXZlQmFjaykpIHsKICAgICAgICAgICAgICAgICAgICAgICAgICAgIEl0ZW1TY2F0dGVyZXIuc3Bhd24od29ybGQsIHBvcy5nZXRYKCkgKyAwLjUsIHBvcy5nZXRZKCkgKyAxLjEsIHBvcy5nZXRaKCkgKyAwLjUsIGdpdmVCYWNrKTsKICAgICAgICAgICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgICAgICAgICBmcmFtZS5kaXNjYXJkKCk7CiAgICAgICAgICAgICAgICAgICAgd29ybGQucGxheVNvdW5kKG51bGwsIHBvcywgU291bmRFdmVudHMuRU5USVRZX0lURU1fRlJBTUVfUkVNT1ZFX0lURU0sIFNvdW5kQ2F0ZWdvcnkuQkxPQ0tTLCAxLjBmLCAxLjBmKTsKICAgICAgICAgICAgICAgICAgICBQZWRlc3RhbEJsb2NrLmNoZWNrUml0dWFsQXJvdW5kKHdvcmxkLCBwb3MpOwogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgcmV0dXJuIEFjdGlvblJlc3VsdC5TVUNDRVNTOwogICAgICAgICAgICB9CiAgICAgICAgICAgIHJldHVybiBBY3Rpb25SZXN1bHQuUEFTUzsKICAgICAgICB9KTsKCiAgICAgICAgQXR0YWNrRW50aXR5Q2FsbGJhY2suRVZFTlQucmVnaXN0ZXIoKHBsYXllciwgd29ybGQsIGhhbmQsIGVudGl0eSwgaGl0UmVzdWx0KSAtPiB7CiAgICAgICAgICAgIGlmIChlbnRpdHkgaW5zdGFuY2VvZiBJdGVtRnJhbWVFbnRpdHkgZnJhbWUgJiYgZnJhbWUuZ2V0Q29tbWFuZFRhZ3MoKS5jb250YWlucygiYnV5dW1vZHVfcGVkZXN0YWxfaXRlbSIpKSB7CiAgICAgICAgICAgICAgICByZXR1cm4gQWN0aW9uUmVzdWx0LkZBSUw7CiAgICAgICAgICAgIH0KICAgICAgICAgICAgcmV0dXJuIEFjdGlvblJlc3VsdC5QQVNTOwogICAgICAgIH0pOwogICAgfQoKICAgIHByaXZhdGUgc3RhdGljIFN0cmluZyBnZXRGdWxsQXJtb3JNYXRlcmlhbChMaXZpbmdFbnRpdHkgZW50aXR5KSB7CiAgICAgICAgSXRlbVN0YWNrIGJvb3RzID0gZW50aXR5LmdldEVxdWlwcGVkU3RhY2soRXF1aXBtZW50U2xvdC5GRUVUKTsKICAgICAgICBJdGVtU3RhY2sgbGVnZ2luZ3MgPSBlbnRpdHkuZ2V0RXF1aXBwZWRTdGFjayhFcXVpcG1lbnRTbG90LkxFR1MpOwogICAgICAgIEl0ZW1TdGFjayBjaGVzdCA9IGVudGl0eS5nZXRFcXVpcHBlZFN0YWNrKEVxdWlwbWVudFNsb3QuQ0hFU1QpOwogICAgICAgIEl0ZW1TdGFjayBoZWxtZXQgPSBlbnRpdHkuZ2V0RXF1aXBwZWRTdGFjayhFcXVpcG1lbnRTbG90LkhFQUQpOwoKICAgICAgICBpZiAoYm9vdHMuaXNFbXB0eSgpIHx8IGxlZ2dpbmdzLmlzRW1wdHkoKSB8fCBjaGVzdC5pc0VtcHR5KCkgfHwgaGVsbWV0LmlzRW1wdHkoKSkgewogICAgICAgICAgICByZXR1cm4gIm5vbmUiOwogICAgICAgIH0KCiAgICAgICAgU3RyaW5nIGIgPSBib290cy5nZXRJdGVtKCkudG9TdHJpbmcoKS50b0xvd2VyQ2FzZSgpOwogICAgICAgIFN0cmluZyBsID0gbGVnZ2luZ3MuZ2V0SXRlbSgpLnRvU3RyaW5nKCkudG9Mb3dlckNhc2UoKTsKICAgICAgICBTdHJpbmcgYyA9IGNoZXN0LmdldEl0ZW0oKS50b1N0cmluZygpLnRvTG93ZXJDYXNlKCk7CiAgICAgICAgU3RyaW5nIGggPSBoZWxtZXQuZ2V0SXRlbSgpLnRvU3RyaW5nKCkudG9Mb3dlckNhc2UoKTsKCiAgICAgICAgaWYgKGIuY29udGFpbnMoImxlYXRoZXIiKSAmJiBsLmNvbnRhaW5zKCJsZWF0aGVyIikgJiYgYy5jb250YWlucygibGVhdGhlciIpICYmIGguY29udGFpbnMoImxlYXRoZXIiKSkgcmV0dXJuICJsZWF0aGVyIjsKICAgICAgICBpZiAoYi5jb250YWlucygiZ29sZGVuIikgJiYgbC5jb250YWlucygiZ29sZGVuIikgJiYgYy5jb250YWlucygiZ29sZGVuIikgJiYgaC5jb250YWlucygiZ29sZGVuIikpIHJldHVybiAiZ29sZCI7CiAgICAgICAgaWYgKGIuY29udGFpbnMoImlyb24iKSAmJiBsLmNvbnRhaW5zKCJpcm9uIikgJiYgYy5jb250YWlucygiaXJvbiIpICYmIGguY29udGFpbnMoImlyb24iKSkgcmV0dXJuICJpcm9uIjsKICAgICAgICBpZiAoYi5jb250YWlucygiZGlhbW9uZCIpICYmIGwuY29udGFpbnMoImRpYW1vbmQiKSAmJiBjLmNvbnRhaW5zKCJkaWFtb25kIikgJiYgaC5jb250YWlucygiZGlhbW9uZCIpKSByZXR1cm4gImRpYW1vbmQiOwogICAgICAgIGlmIChiLmNvbnRhaW5zKCJuZXRoZXJpdGUiKSAmJiBsLmNvbnRhaW5zKCJuZXRoZXJpdGUiKSAmJiBjLmNvbnRhaW5zKCJuZXRoZXJpdGUiKSAmJiBoLmNvbnRhaW5zKCJuZXRoZXJpdGUiKSkgcmV0dXJuICJuZXRoZXJpdGUiOwoKICAgICAgICByZXR1cm4gIm5vbmUiOwogICAgfQp9Cg==" | base64 -d > "src/main/java/com/buyumodu/BuyuModu.java"
+          cat << 'EOF' > "src/main/java/com/buyumodu/BuyuModu.java"
+          package com.buyumodu;
+
+          import net.fabricmc.api.ModInitializer;
+          import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
+          import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
+          import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+          import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+          import net.minecraft.block.AbstractBlock;
+          import net.minecraft.block.Block;
+          import net.minecraft.block.Blocks;
+          import net.minecraft.component.DataComponentTypes;
+          import net.minecraft.component.type.ItemEnchantmentsComponent;
+          import net.minecraft.enchantment.Enchantment;
+          import net.minecraft.enchantment.EnchantmentHelper;
+          import net.minecraft.enchantment.Enchantments;
+          import net.minecraft.entity.EquipmentSlot;
+          import net.minecraft.entity.LivingEntity;
+          import net.minecraft.entity.decoration.ItemFrameEntity;
+          import net.minecraft.entity.effect.StatusEffect;
+          import net.minecraft.entity.effect.StatusEffectInstance;
+          import net.minecraft.item.BlockItem;
+          import net.minecraft.item.Item;
+          import net.minecraft.item.ItemGroup;
+          import net.minecraft.item.ItemStack;
+          import net.minecraft.registry.Registries;
+          import net.minecraft.registry.Registry;
+          import net.minecraft.registry.RegistryKey;
+          import net.minecraft.registry.RegistryKeys;
+          import net.minecraft.registry.entry.RegistryEntry;
+          import net.minecraft.sound.SoundCategory;
+          import net.minecraft.sound.SoundEvents;
+          import net.minecraft.text.Text;
+          import net.minecraft.util.ActionResult;
+          import net.minecraft.util.Identifier;
+          import net.minecraft.util.ItemScatterer;
+          import net.minecraft.util.Rarity;
+          import net.minecraft.util.math.BlockPos;
+
+          import java.util.Optional;
+          import java.util.function.Function;
+
+          public class BuyuModu implements ModInitializer {
+              public static final String MOD_ID = "buyumodu";
+
+              public static final Block EYE_PEDESTAL = registerBlock("eye_pedestal",
+                      settings -> new PedestalBlock(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+
+              public static final Block PEARL_PEDESTAL = registerBlock("pearl_pedestal",
+                      settings -> new PedestalBlock(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+
+              public static final Block EMERALD_PEDESTAL = registerBlock("emerald_pedestal",
+                      settings -> new PedestalBlock(settings.strength(2.0f, 6.0f).requiresTool().nonOpaque()));
+
+              public static final RegistryEntry<StatusEffect> BLEEDING_EFFECT = Registry.registerReference(
+                      Registries.STATUS_EFFECT,
+                      Identifier.of(MOD_ID, "bleeding"),
+                      new BleedingEffect()
+              );
+
+              public static final RegistryKey<Enchantment> KANAMA_ENCHANTMENT = RegistryKey.of(
+                      RegistryKeys.ENCHANTMENT,
+                      Identifier.of(MOD_ID, "kanama")
+              );
+
+              public static final RegistryKey<Enchantment> CAN_CALMA_ENCHANTMENT = RegistryKey.of(
+                      RegistryKeys.ENCHANTMENT,
+                      Identifier.of(MOD_ID, "can_calma")
+              );
+
+              public static final Item KANAMA_BOOK = registerItem("kanama_book",
+                      settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
+
+              public static final Item CAN_CALMA_BOOK = registerItem("can_calma_book",
+                      settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
+
+              public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
+                      RegistryKeys.ITEM_GROUP,
+                      Identifier.of(MOD_ID, "buyu_group")
+              );
+
+              private static Item registerItem(String name, Function<Item.Settings, Item> factory) {
+                  Identifier id = Identifier.of(MOD_ID, name);
+                  RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
+                  Item.Settings settings = new Item.Settings().registryKey(itemKey);
+                  return Registry.register(Registries.ITEM, itemKey, factory.apply(settings));
+              }
+
+              private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory) {
+                  Identifier id = Identifier.of(MOD_ID, name);
+                  RegistryKey<Block> blockKey = RegistryKey.of(RegistryKeys.BLOCK, id);
+                  AbstractBlock.Settings settings = AbstractBlock.Settings.copy(Blocks.BLACKSTONE).registryKey(blockKey);
+                  Block block = Registry.register(Registries.BLOCK, blockKey, factory.apply(settings));
+
+                  RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, id);
+                  Item.Settings itemSettings = new Item.Settings().useBlockPrefixedTranslationKey().registryKey(itemKey);
+                  Registry.register(Registries.ITEM, itemKey, new BlockItem(block, itemSettings));
+
+                  return block;
+              }
+
+              @Override
+              public void onInitialize() {
+                  Registry.register(Registries.ITEM_GROUP, BUYU_ITEM_GROUP,
+                          FabricItemGroup.builder()
+                                  .icon(() -> new ItemStack(KANAMA_BOOK))
+                                  .displayName(Text.translatable("itemGroup.buyumodu.buyu_group"))
+                                  .entries((context, entries) -> {
+                                      entries.add(EYE_PEDESTAL);
+                                      entries.add(PEARL_PEDESTAL);
+                                      entries.add(EMERALD_PEDESTAL);
+
+                                      ItemStack customBook = new ItemStack(KANAMA_BOOK);
+                                      context.lookup().getOptional(RegistryKeys.ENCHANTMENT)
+                                              .flatMap(reg -> reg.getOptional(KANAMA_ENCHANTMENT))
+                                              .ifPresent(kanamaRef -> {
+                                                  ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+                                                  builder.add(kanamaRef, 1);
+                                                  customBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+                                              });
+                                      entries.add(customBook);
+
+                                      for (int lvl = 1; lvl <= 3; lvl++) {
+                                          final int level = lvl;
+                                          ItemStack canCalmaBook = new ItemStack(CAN_CALMA_BOOK);
+                                          context.lookup().getOptional(RegistryKeys.ENCHANTMENT)
+                                                  .flatMap(reg -> reg.getOptional(CAN_CALMA_ENCHANTMENT))
+                                                  .ifPresent(canCalmaRef -> {
+                                                      ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+                                                      builder.add(canCalmaRef, level);
+                                                      canCalmaBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+                                                  });
+                                          entries.add(canCalmaBook);
+                                      }
+                                  })
+                                  .build());
+
+                  ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
+                      if (blocked) return;
+                      if (source.getAttacker() instanceof LivingEntity attacker) {
+                          ItemStack weapon = attacker.getMainHandStack();
+                          if (weapon.isEmpty()) return;
+
+                          Registry<Enchantment> enchRegistry = entity.getEntityWorld().getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+
+                          // 1. Kanama Buyusu Kontrolu
+                          Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(KANAMA_ENCHANTMENT);
+                          if (bleedingOpt.isPresent() && EnchantmentHelper.getLevel(bleedingOpt.get(), weapon) > 0) {
+                              int sharpnessLevel = 0;
+                              Optional<RegistryEntry.Reference<Enchantment>> sharpOpt = enchRegistry.getOptional(Enchantments.SHARPNESS);
+                              if (sharpOpt.isPresent()) {
+                                  sharpnessLevel = EnchantmentHelper.getLevel(sharpOpt.get(), weapon);
+                              }
+
+                              double chance = 0.50;
+                              if (sharpnessLevel == 1) chance = 0.55;
+                              else if (sharpnessLevel == 2) chance = 0.65;
+                              else if (sharpnessLevel == 3) chance = 0.75;
+                              else if (sharpnessLevel == 4) chance = 0.85;
+                              else if (sharpnessLevel >= 5) chance = 0.95;
+
+                              String armorMaterial = getFullArmorMaterial(entity);
+                              if (armorMaterial.equals("leather")) chance -= 0.00;
+                              else if (armorMaterial.equals("gold")) chance -= 0.04;
+                              else if (armorMaterial.equals("iron")) chance -= 0.10;
+                              else if (armorMaterial.equals("diamond")) chance -= 0.25;
+                              else if (armorMaterial.equals("netherite")) chance -= 0.45;
+
+                              if (Math.random() < chance) {
+                                  entity.addStatusEffect(new StatusEffectInstance(
+                                          BLEEDING_EFFECT,
+                                          100, 0, false, true, true
+                                  ));
+                              }
+                          }
+
+                          // 2. Can Calma Buyusu Kontrolu
+                          Optional<RegistryEntry.Reference<Enchantment>> lifestealOpt = enchRegistry.getOptional(CAN_CALMA_ENCHANTMENT);
+                          if (lifestealOpt.isPresent()) {
+                              int lifestealLevel = EnchantmentHelper.getLevel(lifestealOpt.get(), weapon);
+                              if (lifestealLevel > 0 && damageTaken > 0) {
+                                  double chance = 0.0;
+                                  float stealPercent = 0.0f;
+
+                                  if (lifestealLevel == 1) {
+                                      chance = 0.10;
+                                      stealPercent = 0.30f;
+                                  } else if (lifestealLevel == 2) {
+                                      chance = 0.20;
+                                      stealPercent = 0.40f;
+                                  } else if (lifestealLevel >= 3) {
+                                      chance = 0.30;
+                                      stealPercent = 0.50f;
+                                  }
+
+                                  if (Math.random() < chance) {
+                                      float healAmount = damageTaken * stealPercent;
+                                      if (healAmount > 0.0f) {
+                                          attacker.heal(healAmount);
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  });
+
+                  UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                      if (entity instanceof ItemFrameEntity frame && frame.getCommandTags().contains("buyumodu_pedestal_item")) {
+                          if (!world.isClient()) {
+                              BlockPos pos = frame.getAttachedBlockPos().down();
+                              ItemStack held = frame.getHeldItemStack();
+                              if (!held.isEmpty()) {
+                                  ItemStack giveBack = held.copy();
+                                  if (!player.getInventory().insertStack(giveBack)) {
+                                      ItemScatterer.spawn(world, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, giveBack);
+                                  }
+                              }
+                              frame.discard();
+                              world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                              PedestalBlock.checkRitualAround(world, pos);
+                          }
+                          return ActionResult.SUCCESS;
+                      }
+                      return ActionResult.PASS;
+                  });
+
+                  AttackEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
+                      if (entity instanceof ItemFrameEntity frame && frame.getCommandTags().contains("buyumodu_pedestal_item")) {
+                          return ActionResult.FAIL;
+                      }
+                      return ActionResult.PASS;
+                  });
+              }
+
+              private static String getFullArmorMaterial(LivingEntity entity) {
+                  ItemStack boots = entity.getEquippedStack(EquipmentSlot.FEET);
+                  ItemStack leggings = entity.getEquippedStack(EquipmentSlot.LEGS);
+                  ItemStack chest = entity.getEquippedStack(EquipmentSlot.CHEST);
+                  ItemStack helmet = entity.getEquippedStack(EquipmentSlot.HEAD);
+
+                  if (boots.isEmpty() || leggings.isEmpty() || chest.isEmpty() || helmet.isEmpty()) {
+                      return "none";
+                  }
+
+                  String b = boots.getItem().toString().toLowerCase();
+                  String l = leggings.getItem().toString().toLowerCase();
+                  String c = chest.getItem().toString().toLowerCase();
+                  String h = helmet.getItem().toString().toLowerCase();
+
+                  if (b.contains("leather") && l.contains("leather") && c.contains("leather") && h.contains("leather")) return "leather";
+                  if (b.contains("golden") && l.contains("golden") && c.contains("golden") && h.contains("golden")) return "gold";
+                  if (b.contains("iron") && l.contains("iron") && c.contains("iron") && h.contains("iron")) return "iron";
+                  if (b.contains("diamond") && l.contains("diamond") && c.contains("diamond") && h.contains("diamond")) return "diamond";
+                  if (b.contains("netherite") && l.contains("netherite") && c.contains("netherite") && h.contains("netherite")) return "netherite";
+
+                  return "none";
+              }
+          }
+          EOF
+
           echo "ewogICJzY2hlbWFWZXJzaW9uIjogMSwKICAiaWQiOiAiYnV5dW1vZHUiLAogICJ2ZXJzaW9uIjogIiR7dmVyc2lvbn0iLAogICJuYW1lIjogIkLDvHnDvCBNb2R1IiwKICAiZGVzY3JpcHRpb24iOiAiR1VJIGnDp2VybWV5ZW4gcml0w7xlbCBiw7x5w7wgc2lzdGVtaS4iLAogICJhdXRob3JzIjogWyJFcmRlbSJdLAogICJsaWNlbnNlIjogIk1JVCIsCiAgImVudmlyb25tZW50IjogIioiLAogICJlbnRyeXBvaW50cyI6IHsKICAgICJtYWluIjogWwogICAgICAiY29tLmJ1eXVtb2R1LkJ1eXVNb2R1IgogICAgXQogIH0sCiAgImRlcGVuZHMiOiB7CiAgICAiZmFicmljbG9hZGVyIjogIj49MC4xOC4wIiwKICAgICJtaW5lY3JhZnQiOiAifjEuMjEuMTEiLAogICAgImphdmEiOiAiPj0yMSIsCiAgICAiZmFicmljLWFwaSI6ICIqIgogIH0KfQo=" | base64 -d > "src/main/resources/fabric.mod.json"
           echo "ewogICJkZXNjcmlwdGlvbiI6IHsKICAgICJ0cmFuc2xhdGUiOiAiZW5jaGFudG1lbnQuYnV5dW1vZHUua2FuYW1hIgogIH0sCiAgInN1cHBvcnRlZF9pdGVtcyI6ICIjbWluZWNyYWZ0OmVuY2hhbnRhYmxlL3dlYXBvbiIsCiAgIndlaWdodCI6IDEsCiAgIm1heF9sZXZlbCI6IDEsCiAgIm1pbl9jb3N0IjogewogICAgImJhc2UiOiAxNSwKICAgICJwZXJfbGV2ZWxfYWJvdmVfZmlyc3QiOiAwCiAgfSwKICAibWF4X2Nvc3QiOiB7CiAgICAiYmFzZSI6IDUwLAogICAgInBlcl9sZXZlbF9hYm92ZV9maXJzdCI6IDAKICB9LAogICJhbnZpbF9jb3N0IjogNCwKICAic2xvdHMiOiBbCiAgICAibWFpbmhhbmQiCiAgXQp9Cg==" | base64 -d > "src/main/resources/data/buyumodu/enchantment/kanama.json"
+
+          cat << 'EOF' > "src/main/resources/data/buyumodu/enchantment/can_calma.json"
+          {
+            "description": {
+              "translate": "enchantment.buyumodu.can_calma"
+            },
+            "supported_items": "#minecraft:enchantable/weapon",
+            "weight": 2,
+            "max_level": 3,
+            "min_cost": {
+              "base": 15,
+              "per_level_above_first": 9
+            },
+            "max_cost": {
+              "base": 50,
+              "per_level_above_first": 9
+            },
+            "anvil_cost": 4,
+            "slots": [
+              "mainhand"
+            ]
+          }
+          EOF
+
           echo "ewogICJyZXBsYWNlIjogZmFsc2UsCiAgInZhbHVlcyI6IFsKICAgICJidXl1bW9kdTpleWVfcGVkZXN0YWwiLAogICAgImJ1eXVtb2R1OnBlYXJsX3BlZGVzdGFsIiwKICAgICJidXl1bW9kdTplbWVyYWxkX3BlZGVzdGFsIgogIF0KfQo=" | base64 -d > "src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json"
-          echo "ewogICJpdGVtR3JvdXAuYnV5dW1vZHUuYnV5dV9ncm91cCI6ICJCw7x5w7wgTW9kdSIsCiAgImJsb2NrLmJ1eXVtb2R1LmV5ZV9wZWRlc3RhbCI6ICJHw7Z6IFPDvHR1bnUiLAogICJibG9jay5idXl1bW9kdS5wZWFybF9wZWRlc3RhbCI6ICLEsG5jaSBTw7x0dW51IiwKICAiYmxvY2suYnV5dW1vZHUuZW1lcmFsZF9wZWRlc3RhbCI6ICJaw7xtcsO8dCBTw7x0dW51IiwKICAiaXRlbS5idXl1bW9kdS5rYW5hbWFfYm9vayI6ICJLYW5hbWEgQsO8ecO8IEtpdGFixLEiLAogICJlbmNoYW50bWVudC5idXl1bW9kdS5rYW5hbWEiOiAiS2FuYW1hIiwKICAiZWZmZWN0LmJ1eXVtb2R1LmJsZWVkaW5nIjogIkthbmFtYSIKfQo=" | base64 -d > "src/main/resources/assets/buyumodu/lang/tr_tr.json"
-          echo "ewogICJpdGVtR3JvdXAuYnV5dW1vZHUuYnV5dV9ncm91cCI6ICJNYWdpYyBNb2QiLAogICJibG9jay5idXl1bW9kdS5leWVfcGVkZXN0YWwiOiAiRXllIFBlZGVzdGFsIiwKICAiYmxvY2suYnV5dW1vZHUucGVhcmxfcGVkZXN0YWwiOiAiUGVhcmwgUGVkZXN0YWwiLAogICJibG9jay5idXl1bW9kdS5lbWVyYWxkX3BlZGVzdGFsIjogIkVtZXJhbGQgUGVkZXN0YWwiLAogICJpdGVtLmJ1eXVtb2R1LmthbmFtYV9ib29rIjogIkJsZWVkaW5nIEVuY2hhbnRtZW50IEJvb2siLAogICJlbmNoYW50bWVudC5idXl1bW9kdS5rYW5hbWEiOiAiQmxlZWRpbmciLAogICJlZmZlY3QuYnV5dW1vZHUuYmxlZWRpbmciOiAiQmxlZWRpbmciCn0K" | base64 -d > "src/main/resources/assets/buyumodu/lang/en_us.json"
+
+          cat << 'EOF' > "src/main/resources/assets/buyumodu/lang/tr_tr.json"
+          {
+            "itemGroup.buyumodu.buyu_group": "Büyü Modu",
+            "block.buyumodu.eye_pedestal": "Göz Sütunu",
+            "block.buyumodu.pearl_pedestal": "İnci Sütunu",
+            "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu",
+            "item.buyumodu.kanama_book": "Kanama Büyü Kitabı",
+            "item.buyumodu.can_calma_book": "Can Çalma Büyü Kitabı",
+            "enchantment.buyumodu.kanama": "Kanama",
+            "enchantment.buyumodu.can_calma": "Can Çalma",
+            "effect.buyumodu.bleeding": "Kanama"
+          }
+          EOF
+
+          cat << 'EOF' > "src/main/resources/assets/buyumodu/lang/en_us.json"
+          {
+            "itemGroup.buyumodu.buyu_group": "Magic Mod",
+            "block.buyumodu.eye_pedestal": "Eye Pedestal",
+            "block.buyumodu.pearl_pedestal": "Pearl Pedestal",
+            "block.buyumodu.emerald_pedestal": "Emerald Pedestal",
+            "item.buyumodu.kanama_book": "Bleeding Enchantment Book",
+            "item.buyumodu.can_calma_book": "Lifesteal Enchantment Book",
+            "enchantment.buyumodu.kanama": "Bleeding",
+            "enchantment.buyumodu.can_calma": "Lifesteal",
+            "effect.buyumodu.bleeding": "Bleeding"
+          }
+          EOF
+
           echo "ewogICJ0eXBlIjogIm1pbmVjcmFmdDpjcmFmdGluZ19zaGFwZWQiLAogICJjYXRlZ29yeSI6ICJtaXNjIiwKICAicGF0dGVybiI6IFsiUyIsICJNIiwgIlciXSwKICAia2V5IjogewogICAgIlMiOiAibWluZWNyYWZ0OmJsYWNrc3RvbmVfc2xhYiIsCiAgICAiTSI6ICJtaW5lY3JhZnQ6ZW5kZXJfZXllIiwKICAgICJXIjogIm1pbmVjcmFmdDpibGFja3N0b25lX3dhbGwiCiAgfSwKICAicmVzdWx0IjogeyAiaWQiOiAiYnV5dW1vZHU6ZXllX3BlZGVzdGFsIiwgImNvdW50IjogMSB9Cn0K" | base64 -d > "src/main/resources/data/buyumodu/recipe/eye_pedestal.json"
           echo "ewogICJ0eXBlIjogIm1pbmVjcmFmdDpibG9jayIsCiAgInBvb2xzIjogW3sKICAgICJyb2xscyI6IDEuMCwKICAgICJjb25kaXRpb25zIjogW3siY29uZGl0aW9uIjogIm1pbmVjcmFmdDpzdXJ2aXZlc19leHBsb3Npb24ifV0sCiAgICAiZW50cmllcyI6IFt7InR5cGUiOiAibWluZWNyYWZ0Oml0ZW0iLCAibmFtZSI6ICJidXl1bW9kdTpleWVfcGVkZXN0YWwifV0KICB9XQp9Cg==" | base64 -d > "src/main/resources/data/buyumodu/loot_table/blocks/eye_pedestal.json"
           echo "ewogICJ2YXJpYW50cyI6IHsgIiI6IHsgIm1vZGVsIjogImJ1eXVtb2R1OmJsb2NrL2V5ZV9wZWRlc3RhbCIgfSB9Cn0K" | base64 -d > "src/main/resources/assets/buyumodu/blockstates/eye_pedestal.json"
@@ -298,13 +608,15 @@ jobs:
           echo "ewogICJwYXJlbnQiOiAibWluZWNyYWZ0OmJsb2NrL2Jsb2NrIiwKICAidGV4dHVyZXMiOiB7CiAgICAicGFydGljbGUiOiAibWluZWNyYWZ0OmJsb2NrL2JsYWNrc3RvbmUiLAogICAgImJhc2UiOiAibWluZWNyYWZ0OmJsb2NrL2JsYWNrc3RvbmUiLAogICAgInRvcCI6ICJtaW5lY3JhZnQ6YmxvY2svYmxhY2tzdG9uZV90b3AiLAogICAgImNvcmUiOiAibWluZWNyYWZ0OmJsb2NrL2VtZXJhbGRfYmxvY2siCiAgfSwKICAiZWxlbWVudHMiOiBbCiAgICB7CiAgICAgICJmcm9tIjogWzUuMCwgMC4wLCA1LjBdLCAidG8iOiBbMTEuMCwgNi4wLCAxMS4wXSwKICAgICAgImZhY2VzIjogewogICAgICAgICJub3J0aCI6IHsidGV4dHVyZSI6ICIjYmFzZSJ9LCAic291dGgiOiB7InRleHR1cmUiOiAiI2Jhc2UifSwKICAgICAgICAid2VzdCI6IHsidGV4dHVyZSI6ICIjYmFzZSJ9LCAiZWFzdCI6IHsidGV4dHVyZSI6ICIjYmFzZSJ9LAogICAgICAgICJ1cCI6IHsidGV4dHVyZSI6ICIjdG9wIn0sICJkb3duIjogeyJ0ZXh0dXJlIjogIiN0b3AifQogICAgICB9CiAgICB9LAogICAgewogICAgICAiZnJvbSI6IFs2LjAsIDYuMCwgNi4wXSwgInRvIjogWzEwLjAsIDEyLjAsIDEwLjBdLAogICAgICAiZmFjZXMiOiB7CiAgICAgICAgIm5vcnRoIjogeyJ0ZXh0dXJlIjogIiNjb3JlIn0sICJzb3V0aCI6IHsidGV4dHVyZSI6ICIjY29yZSJ9LAogICAgICAgICJ3ZXN0IjogeyJ0ZXh0dXJlIjogIiNjb3JlIn0sICJlYXN0IjogeyJ0ZXh0dXJlIjogIiNjb3JlIn0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImZyb20iOiBbMy42LCAxMi4wLCAzLjZdLCAidG8iOiBbMTIuNCwgMTYuMCwgMTIuNF0sCiAgICAgICJmYWNlcyI6IHsKICAgICAgICAibm9ydGgiOiB7InRleHR1cmUiOiAiI2Jhc2UifSwgInNvdXRoIjogeyJ0ZXh0dXJlIjogIiNiYXNlIn0sCiAgICAgICAgIndlc3QiOiB7InRleHR1cmUiOiAiI2Jhc2UifSwgImVhc3QiOiB7InRleHR1cmUiOiAiI2Jhc2UifSwKICAgICAgICAidXAiOiB7InRleHR1cmUiOiAiI3RvcCJ9LCAiZG93biI6IHsidGV4dHVyZSI6ICIjdG9wIn0KICAgICAgfQogICAgfQogIF0KfQo=" | base64 -d > "src/main/resources/assets/buyumodu/models/block/emerald_pedestal.json"
           echo "ewogICJtb2RlbCI6IHsgInR5cGUiOiAibWluZWNyYWZ0Om1vZGVsIiwgIm1vZGVsIjogIm1pbmVjcmFmdDppdGVtL2VuY2hhbnRlZF9ib29rIiB9Cn0K" | base64 -d > "src/main/resources/assets/buyumodu/items/kanama_book.json"
           echo "ewogICJwYXJlbnQiOiAibWluZWNyYWZ0Oml0ZW0vZW5jaGFudGVkX2Jvb2siCn0K" | base64 -d > "src/main/resources/assets/buyumodu/models/item/kanama_book.json"
+          echo "ewogICJtb2RlbCI6IHsgInR5cGUiOiAibWluZWNyYWZ0Om1vZGVsIiwgIm1vZGVsIjogIm1pbmVjcmFmdDppdGVtL2VuY2hhbnRlZF9ib29rIiB9Cn0K" | base64 -d > "src/main/resources/assets/buyumodu/items/can_calma_book.json"
+          echo "ewogICJwYXJlbnQiOiAibWluZWNyYWZ0Oml0ZW0vZW5jaGFudGVkX2Jvb2siCn0K" | base64 -d > "src/main/resources/assets/buyumodu/models/item/can_calma_book.json"
 
       - name: Dosyalari GitHub Deposuna Kaydet
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --staged --quiet || git commit -m "Rituelde zumrut yerine lapis kullanimi"
+          git diff --staged --quiet || git commit -m "Can Calma buyusu (Seviye 1-3) eklendi"
           git push
 
       - name: Java 21 Kur
