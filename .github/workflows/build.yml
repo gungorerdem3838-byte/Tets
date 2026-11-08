@@ -17,10 +17,11 @@ jobs:
 
       - name: Tum Mod Dosyalarini Olustur
         run: |
-          mkdir -p "src/main/java/com/buyumodu"
+          mkdir -p "src/main/java/com/buyumodu/mixin"
           mkdir -p "src/main/resources/data/buyumodu/recipe"
           mkdir -p "src/main/resources/data/buyumodu/loot_table/blocks"
           mkdir -p "src/main/resources/data/buyumodu/enchantment"
+          mkdir -p "src/main/resources/data/buyumodu/tags/enchantment/exclusive_set"
           mkdir -p "src/main/resources/data/minecraft/tags/block/mineable"
           mkdir -p "src/main/resources/assets/buyumodu/lang"
           mkdir -p "src/main/resources/assets/buyumodu/blockstates"
@@ -32,6 +33,94 @@ jobs:
           echo "cGx1Z2lucyB7CiAgICBpZCAnZmFicmljLWxvb20nIHZlcnNpb24gIiR7bG9vbV92ZXJzaW9ufSIKICAgIGlkICdtYXZlbi1wdWJsaXNoJwp9Cgp2ZXJzaW9uID0gcHJvamVjdC5tb2RfdmVyc2lvbgpncm91cCA9IHByb2plY3QubWF2ZW5fZ3JvdXAKCmJhc2UgewogICAgYXJjaGl2ZXNOYW1lID0gcHJvamVjdC5hcmNoaXZlc19iYXNlX25hbWUKfQoKcmVwb3NpdG9yaWVzIHsKICAgIG1hdmVuIHsKICAgICAgICBuYW1lID0gJ0ZhYnJpYycKICAgICAgICB1cmwgPSAnaHR0cHM6Ly9tYXZlbi5mYWJyaWNtYy5uZXQvJwogICAgfQogICAgbWF2ZW5DZW50cmFsKCkKfQoKZGVwZW5kZW5jaWVzIHsKICAgIG1pbmVjcmFmdCAiY29tLm1vamFuZzptaW5lY3JhZnQ6JHtwcm9qZWN0Lm1pbmVjcmFmdF92ZXJzaW9ufSIKICAgIG1hcHBpbmdzICJuZXQuZmFicmljbWM6eWFybjoke3Byb2plY3QueWFybl9tYXBwaW5nc306djIiCiAgICBtb2RJbXBsZW1lbnRhdGlvbiAibmV0LmZhYnJpY21jOmZhYnJpYy1sb2FkZXI6JHtwcm9qZWN0LmxvYWRlcl92ZXJzaW9ufSIKICAgIG1vZEltcGxlbWVudGF0aW9uICJuZXQuZmFicmljbWMuZmFicmljLWFwaTpmYWJyaWMtYXBpOiR7cHJvamVjdC5mYWJyaWNfdmVyc2lvbn0iCn0KCnByb2Nlc3NSZXNvdXJjZXMgewogICAgaW5wdXRzLnByb3BlcnR5ICJ2ZXJzaW9uIiwgcHJvamVjdC52ZXJzaW9uCiAgICBmaWxlc01hdGNoaW5nKCJmYWJyaWMubW9kLmpzb24iKSB7CiAgICAgICAgZXhwYW5kICJ2ZXJzaW9uIjogaW5wdXRzLnByb3BlcnRpZXMudmVyc2lvbgogICAgfQp9Cgp0YXNrcy53aXRoVHlwZShKYXZhQ29tcGlsZSkuY29uZmlndXJlRWFjaCB7CiAgICBpdC5vcHRpb25zLnJlbGVhc2UgPSAyMQp9CgpqYXZhIHsKICAgIHdpdGhTb3VyY2VzSmFyKCkKICAgIHNvdXJjZUNvbXBhdGliaWxpdHkgPSBKYXZhVmVyc2lvbi5WRVJTSU9OXzIxCiAgICB0YXJnZXRDb21wYXRpYmlsaXR5ID0gSmF2YVZlcnNpb24uVkVSU0lPTl8yMQp9Cg==" | base64 -d > "build.gradle"
           echo "cGFja2FnZSBjb20uYnV5dW1vZHU7CgppbXBvcnQgbmV0Lm1pbmVjcmFmdC5lbnRpdHkuTGl2aW5nRW50aXR5OwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5lbnRpdHkuZWZmZWN0LlN0YXR1c0VmZmVjdDsKaW1wb3J0IG5ldC5taW5lY3JhZnQuZW50aXR5LmVmZmVjdC5TdGF0dXNFZmZlY3RDYXRlZ29yeTsKaW1wb3J0IG5ldC5taW5lY3JhZnQuc2VydmVyLndvcmxkLlNlcnZlcldvcmxkOwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5zb3VuZC5Tb3VuZENhdGVnb3J5OwppbXBvcnQgbmV0Lm1pbmVjcmFmdC5zb3VuZC5Tb3VuZEV2ZW50czsKCnB1YmxpYyBjbGFzcyBCbGVlZGluZ0VmZmVjdCBleHRlbmRzIFN0YXR1c0VmZmVjdCB7CiAgICBwdWJsaWMgQmxlZWRpbmdFZmZlY3QoKSB7CiAgICAgICAgc3VwZXIoU3RhdHVzRWZmZWN0Q2F0ZWdvcnkuSEFSTUZVTCwgMHg5OTAwMDApOwogICAgfQoKICAgIEBPdmVycmlkZQogICAgcHVibGljIGJvb2xlYW4gY2FuQXBwbHlVcGRhdGVFZmZlY3QoaW50IGR1cmF0aW9uLCBpbnQgYW1wbGlmaWVyKSB7CiAgICAgICAgcmV0dXJuIGR1cmF0aW9uICUgMjAgPT0gMDsKICAgIH0KCiAgICBAT3ZlcnJpZGUKICAgIHB1YmxpYyBib29sZWFuIGFwcGx5VXBkYXRlRWZmZWN0KFNlcnZlcldvcmxkIHdvcmxkLCBMaXZpbmdFbnRpdHkgZW50aXR5LCBpbnQgYW1wbGlmaWVyKSB7CiAgICAgICAgZW50aXR5LmRhbWFnZSh3b3JsZCwgd29ybGQuZ2V0RGFtYWdlU291cmNlcygpLm1hZ2ljKCksIDEuMGYgKyBhbXBsaWZpZXIpOwogICAgICAgIHdvcmxkLnBsYXlTb3VuZChudWxsLCBlbnRpdHkuZ2V0QmxvY2tQb3MoKSwgU291bmRFdmVudHMuRU5USVRZX0dFTkVSSUNfSFVSVCwgU291bmRDYXRlZ29yeS5IT1NUSUxFLCAwLjRmLCAxLjVmKTsKICAgICAgICByZXR1cm4gdHJ1ZTsKICAgIH0KfQo=" | base64 -d > "src/main/java/com/buyumodu/BleedingEffect.java"
 
+          cat << 'EOF' > "src/main/java/com/buyumodu/mixin/BowItemMixin.java"
+          package com.buyumodu.mixin;
+
+          import com.buyumodu.BuyuModu;
+          import net.minecraft.enchantment.Enchantment;
+          import net.minecraft.enchantment.EnchantmentHelper;
+          import net.minecraft.entity.LivingEntity;
+          import net.minecraft.entity.player.PlayerEntity;
+          import net.minecraft.entity.projectile.PersistentProjectileEntity;
+          import net.minecraft.entity.projectile.ProjectileEntity;
+          import net.minecraft.item.ArrowItem;
+          import net.minecraft.item.BowItem;
+          import net.minecraft.item.ItemStack;
+          import net.minecraft.item.Items;
+          import net.minecraft.registry.Registry;
+          import net.minecraft.registry.RegistryKeys;
+          import net.minecraft.registry.entry.RegistryEntry;
+          import net.minecraft.server.world.ServerWorld;
+          import net.minecraft.world.World;
+          import org.spongepowered.asm.mixin.Mixin;
+          import org.spongepowered.asm.mixin.injection.At;
+          import org.spongepowered.asm.mixin.injection.Inject;
+          import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+          import java.util.Optional;
+
+          @Mixin(BowItem.class)
+          public class BowItemMixin {
+              @Inject(method = "onStoppedUsing", at = @At("RETURN"))
+              private void buyumodu$onBowStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks, CallbackInfoReturnable<Boolean> cir) {
+                  if (!Boolean.TRUE.equals(cir.getReturnValue())) return;
+                  if (!(world instanceof ServerWorld serverWorld)) return;
+                  if (!(user instanceof PlayerEntity player)) return;
+
+                  Registry<Enchantment> enchRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+                  Optional<RegistryEntry.Reference<Enchantment>> verticalOpt = enchRegistry.getOptional(BuyuModu.DIKEY_COKLU_ATIS_ENCHANTMENT);
+                  if (verticalOpt.isEmpty() || EnchantmentHelper.getLevel(verticalOpt.get(), stack) <= 0) return;
+
+                  int useTicks = stack.getMaxUseTime(user) - remainingUseTicks;
+                  float pullProgress = BowItem.getPullProgress(useTicks);
+                  if (pullProgress < 0.1f) return;
+
+                  float speed = pullProgress * 3.0f;
+                  float[] pitchOffsets = {-6.0f, 6.0f};
+
+                  for (float pitchOffset : pitchOffsets) {
+                      ItemStack projectileStack = player.getProjectileType(stack);
+                      if (projectileStack.isEmpty() && !player.getAbilities().creativeMode) {
+                          break;
+                      }
+                      if (projectileStack.isEmpty()) {
+                          projectileStack = new ItemStack(Items.ARROW);
+                      }
+
+                      ItemStack singleArrow = projectileStack.copyWithCount(1);
+                      if (!player.getAbilities().creativeMode) {
+                          projectileStack.decrement(1);
+                          if (projectileStack.isEmpty()) {
+                              player.getInventory().removeOne(projectileStack);
+                          }
+                      }
+
+                      ArrowItem arrowItem = (ArrowItem) (singleArrow.getItem() instanceof ArrowItem ? singleArrow.getItem() : Items.ARROW);
+                      PersistentProjectileEntity projectile = arrowItem.createArrow(serverWorld, singleArrow, player, stack);
+                      if (pullProgress == 1.0f) {
+                          projectile.setCritical(true);
+                      }
+                      if (player.getAbilities().creativeMode) {
+                          projectile.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
+                      } else {
+                          projectile.pickupType = PersistentProjectileEntity.PickupPermission.ALLOWED;
+                      }
+
+                      ProjectileEntity.spawnWithVelocity(
+                              projectile,
+                              serverWorld,
+                              singleArrow,
+                              player.getPitch() + pitchOffset,
+                              player.getYaw(),
+                              0.0f,
+                              speed,
+                              1.0f
+                      );
+                  }
+              }
+          }
+          EOF
+
           cat << 'EOF' > "src/main/java/com/buyumodu/PedestalBlock.java"
           package com.buyumodu;
 
@@ -40,6 +129,7 @@ jobs:
           import net.minecraft.block.ShapeContext;
           import net.minecraft.enchantment.Enchantment;
           import net.minecraft.enchantment.EnchantmentHelper;
+          import net.minecraft.enchantment.Enchantments;
           import net.minecraft.entity.decoration.ItemFrameEntity;
           import net.minecraft.entity.player.PlayerEntity;
           import net.minecraft.item.Item;
@@ -156,9 +246,14 @@ jobs:
                   return id.contains("sword") || id.contains("axe") || id.contains("trident") || id.contains("mace");
               }
 
+              public static boolean isBowWeapon(ItemStack stack) {
+                  if (stack.isEmpty()) return false;
+                  return stack.isOf(Items.BOW) || stack.isIn(ItemTags.BOW_ENCHANTABLE);
+              }
+
               private static void tryPerformRitual(World world, BlockPos centerPos) {
                   ItemStack centerItem = getDisplayedItem(world, centerPos);
-                  if (!isCombatWeapon(centerItem)) return;
+                  if (centerItem.isEmpty()) return;
 
                   // Sütun bloklarının yerinde olup olmadığını doğrula ve üstlerindeki eşyaları al
                   Item[] emeraldItems = new Item[4];
@@ -176,6 +271,36 @@ jobs:
                   }
 
                   Registry<Enchantment> enchRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+
+                  // YAY RITUELI: DIKEY COKLU ATIS
+                  if (isBowWeapon(centerItem)) {
+                      Optional<RegistryEntry.Reference<Enchantment>> verticalOpt = enchRegistry.getOptional(BuyuModu.DIKEY_COKLU_ATIS_ENCHANTMENT);
+                      Optional<RegistryEntry.Reference<Enchantment>> infinityOpt = enchRegistry.getOptional(Enchantments.INFINITY);
+
+                      boolean hasInfinity = infinityOpt.isPresent() && EnchantmentHelper.getLevel(infinityOpt.get(), centerItem) > 0;
+                      if (verticalOpt.isPresent() && !hasInfinity && EnchantmentHelper.getLevel(verticalOpt.get(), centerItem) == 0) {
+                          boolean allLapis = true;
+                          for (int i = 0; i < 4; i++) {
+                              if (emeraldItems[i] != Items.LAPIS_LAZULI) allLapis = false;
+                          }
+
+                          boolean pearlOppositeMatch =
+                                  (pearlItems[0] == Items.ARROW && pearlItems[3] == Items.ARROW &&
+                                   pearlItems[1] == Items.IRON_INGOT && pearlItems[2] == Items.IRON_INGOT)
+                                  ||
+                                  (pearlItems[0] == Items.IRON_INGOT && pearlItems[3] == Items.IRON_INGOT &&
+                                   pearlItems[1] == Items.ARROW && pearlItems[2] == Items.ARROW);
+
+                          if (allLapis && pearlOppositeMatch) {
+                              completeRitual(world, centerPos, centerItem, verticalOpt.get(), 1);
+                              return;
+                          }
+                      }
+                  }
+
+                  // YAKIN DOVUS SILAHI RITUELLERI
+                  if (!isCombatWeapon(centerItem)) return;
+
                   Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(BuyuModu.KANAMA_ENCHANTMENT);
                   Optional<RegistryEntry.Reference<Enchantment>> lifestealOpt = enchRegistry.getOptional(BuyuModu.CAN_CALMA_ENCHANTMENT);
 
@@ -424,10 +549,18 @@ jobs:
                       Identifier.of(MOD_ID, "can_calma")
               );
 
+              public static final RegistryKey<Enchantment> DIKEY_COKLU_ATIS_ENCHANTMENT = RegistryKey.of(
+                      RegistryKeys.ENCHANTMENT,
+                      Identifier.of(MOD_ID, "dikey_coklu_atis")
+              );
+
               public static final Item KANAMA_BOOK = registerItem("kanama_book",
                       settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
 
               public static final Item CAN_CALMA_BOOK = registerItem("can_calma_book",
+                      settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
+
+              public static final Item DIKEY_COKLU_ATIS_BOOK = registerItem("dikey_coklu_atis_book",
                       settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
 
               public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
@@ -488,6 +621,16 @@ jobs:
                                                   });
                                           entries.add(canCalmaBook);
                                       }
+
+                                      ItemStack dikeyBook = new ItemStack(DIKEY_COKLU_ATIS_BOOK);
+                                      context.lookup().getOptional(RegistryKeys.ENCHANTMENT)
+                                              .flatMap(reg -> reg.getOptional(DIKEY_COKLU_ATIS_ENCHANTMENT))
+                                              .ifPresent(dikeyRef -> {
+                                                  ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+                                                  builder.add(dikeyRef, 1);
+                                                  dikeyBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+                                              });
+                                      entries.add(dikeyBook);
                                   })
                                   .build());
 
@@ -614,7 +757,48 @@ jobs:
           }
           EOF
 
-          echo "ewogICJzY2hlbWFWZXJzaW9uIjogMSwKICAiaWQiOiAiYnV5dW1vZHUiLAogICJ2ZXJzaW9uIjogIiR7dmVyc2lvbn0iLAogICJuYW1lIjogIkLDvHnDvCBNb2R1IiwKICAiZGVzY3JpcHRpb24iOiAiR1VJIGnDp2VybWV5ZW4gcml0w7xlbCBiw7x5w7wgc2lzdGVtaS4iLAogICJhdXRob3JzIjogWyJFcmRlbSJdLAogICJsaWNlbnNlIjogIk1JVCIsCiAgImVudmlyb25tZW50IjogIioiLAogICJlbnRyeXBvaW50cyI6IHsKICAgICJtYWluIjogWwogICAgICAiY29tLmJ1eXVtb2R1LkJ1eXVNb2R1IgogICAgXQogIH0sCiAgImRlcGVuZHMiOiB7CiAgICAiZmFicmljbG9hZGVyIjogIj49MC4xOC4wIiwKICAgICJtaW5lY3JhZnQiOiAifjEuMjEuMTEiLAogICAgImphdmEiOiAiPj0yMSIsCiAgICAiZmFicmljLWFwaSI6ICIqIgogIH0KfQo=" | base64 -d > "src/main/resources/fabric.mod.json"
+          cat << 'EOF' > "src/main/resources/fabric.mod.json"
+          {
+            "schemaVersion": 1,
+            "id": "buyumodu",
+            "version": "${version}",
+            "name": "Büyü Modu",
+            "description": "GUI içermeyen ritüel büyü sistemi.",
+            "authors": ["Erdem"],
+            "license": "MIT",
+            "environment": "*",
+            "entrypoints": {
+              "main": [
+                "com.buyumodu.BuyuModu"
+              ]
+            },
+            "mixins": [
+              "buyumodu.mixins.json"
+            ],
+            "depends": {
+              "fabricloader": ">=0.18.0",
+              "minecraft": "~1.21.11",
+              "java": ">=21",
+              "fabric-api": "*"
+            }
+          }
+          EOF
+
+          cat << 'EOF' > "src/main/resources/buyumodu.mixins.json"
+          {
+            "required": true,
+            "minVersion": "0.8",
+            "package": "com.buyumodu.mixin",
+            "compatibilityLevel": "JAVA_21",
+            "mixins": [
+              "BowItemMixin"
+            ],
+            "injectors": {
+              "defaultRequire": 1
+            }
+          }
+          EOF
+
           echo "ewogICJkZXNjcmlwdGlvbiI6IHsKICAgICJ0cmFuc2xhdGUiOiAiZW5jaGFudG1lbnQuYnV5dW1vZHUua2FuYW1hIgogIH0sCiAgInN1cHBvcnRlZF9pdGVtcyI6ICIjbWluZWNyYWZ0OmVuY2hhbnRhYmxlL3dlYXBvbiIsCiAgIndlaWdodCI6IDEsCiAgIm1heF9sZXZlbCI6IDEsCiAgIm1pbl9jb3N0IjogewogICAgImJhc2UiOiAxNSwKICAgICJwZXJfbGV2ZWxfYWJvdmVfZmlyc3QiOiAwCiAgfSwKICAibWF4X2Nvc3QiOiB7CiAgICAiYmFzZSI6IDUwLAogICAgInBlcl9sZXZlbF9hYm92ZV9maXJzdCI6IDAKICB9LAogICJhbnZpbF9jb3N0IjogNCwKICAic2xvdHMiOiBbCiAgICAibWFpbmhhbmQiCiAgXQp9Cg==" | base64 -d > "src/main/resources/data/buyumodu/enchantment/kanama.json"
 
           cat << 'EOF' > "src/main/resources/data/buyumodu/enchantment/can_calma.json"
@@ -640,6 +824,41 @@ jobs:
           }
           EOF
 
+          cat << 'EOF' > "src/main/resources/data/buyumodu/enchantment/dikey_coklu_atis.json"
+          {
+            "description": {
+              "translate": "enchantment.buyumodu.dikey_coklu_atis"
+            },
+            "exclusive_set": "#buyumodu:exclusive_set/bow_multishot",
+            "supported_items": "#minecraft:enchantable/bow",
+            "weight": 2,
+            "max_level": 1,
+            "min_cost": {
+              "base": 20,
+              "per_level_above_first": 0
+            },
+            "max_cost": {
+              "base": 50,
+              "per_level_above_first": 0
+            },
+            "anvil_cost": 4,
+            "slots": [
+              "mainhand",
+              "offhand"
+            ]
+          }
+          EOF
+
+          cat << 'EOF' > "src/main/resources/data/buyumodu/tags/enchantment/exclusive_set/bow_multishot.json"
+          {
+            "replace": false,
+            "values": [
+              "minecraft:infinity",
+              "buyumodu:dikey_coklu_atis"
+            ]
+          }
+          EOF
+
           echo "ewogICJyZXBsYWNlIjogZmFsc2UsCiAgInZhbHVlcyI6IFsKICAgICJidXl1bW9kdTpleWVfcGVkZXN0YWwiLAogICAgImJ1eXVtb2R1OnBlYXJsX3BlZGVzdGFsIiwKICAgICJidXl1bW9kdTplbWVyYWxkX3BlZGVzdGFsIgogIF0KfQo=" | base64 -d > "src/main/resources/data/minecraft/tags/block/mineable/pickaxe.json"
 
           cat << 'EOF' > "src/main/resources/assets/buyumodu/lang/tr_tr.json"
@@ -650,8 +869,10 @@ jobs:
             "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu",
             "item.buyumodu.kanama_book": "Kanama Büyü Kitabı",
             "item.buyumodu.can_calma_book": "Can Çalma Büyü Kitabı",
+            "item.buyumodu.dikey_coklu_atis_book": "Dikey Çoklu Atış Büyü Kitabı",
             "enchantment.buyumodu.kanama": "Kanama",
             "enchantment.buyumodu.can_calma": "Can Çalma",
+            "enchantment.buyumodu.dikey_coklu_atis": "Dikey Çoklu Atış",
             "effect.buyumodu.bleeding": "Kanama"
           }
           EOF
@@ -664,8 +885,10 @@ jobs:
             "block.buyumodu.emerald_pedestal": "Emerald Pedestal",
             "item.buyumodu.kanama_book": "Bleeding Enchantment Book",
             "item.buyumodu.can_calma_book": "Lifesteal Enchantment Book",
+            "item.buyumodu.dikey_coklu_atis_book": "Vertical Multishot Enchantment Book",
             "enchantment.buyumodu.kanama": "Bleeding",
             "enchantment.buyumodu.can_calma": "Lifesteal",
+            "enchantment.buyumodu.dikey_coklu_atis": "Vertical Multishot",
             "effect.buyumodu.bleeding": "Bleeding"
           }
           EOF
@@ -692,13 +915,15 @@ jobs:
           echo "ewogICJwYXJlbnQiOiAibWluZWNyYWZ0Oml0ZW0vZW5jaGFudGVkX2Jvb2siCn0K" | base64 -d > "src/main/resources/assets/buyumodu/models/item/kanama_book.json"
           echo "ewogICJtb2RlbCI6IHsgInR5cGUiOiAibWluZWNyYWZ0Om1vZGVsIiwgIm1vZGVsIjogIm1pbmVjcmFmdDppdGVtL2VuY2hhbnRlZF9ib29rIiB9Cn0K" | base64 -d > "src/main/resources/assets/buyumodu/items/can_calma_book.json"
           echo "ewogICJwYXJlbnQiOiAibWluZWNyYWZ0Oml0ZW0vZW5jaGFudGVkX2Jvb2siCn0K" | base64 -d > "src/main/resources/assets/buyumodu/models/item/can_calma_book.json"
+          echo "ewogICJtb2RlbCI6IHsgInR5cGUiOiAibWluZWNyYWZ0Om1vZGVsIiwgIm1vZGVsIjogIm1pbmVjcmFmdDppdGVtL2VuY2hhbnRlZF9ib29rIiB9Cn0K" | base64 -d > "src/main/resources/assets/buyumodu/items/dikey_coklu_atis_book.json"
+          echo "ewogICJwYXJlbnQiOiAibWluZWNyYWZ0Oml0ZW0vZW5jaGFudGVkX2Jvb2siCn0K" | base64 -d > "src/main/resources/assets/buyumodu/models/item/dikey_coklu_atis_book.json"
 
       - name: Dosyalari GitHub Deposuna Kaydet
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --staged --quiet || git commit -m "Can Calma 1-2-3 rituelleri eklendi"
+          git diff --staged --quiet || git commit -m "Dikey Coklu Atis buyusu ve ritueli eklendi"
           git push
 
       - name: Java 21 Kur
