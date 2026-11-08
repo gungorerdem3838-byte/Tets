@@ -76,7 +76,8 @@ jobs:
                   if (pullProgress < 0.1f) return;
 
                   float speed = pullProgress * 3.0f;
-                  float[] pitchOffsets = {-6.0f, 6.0f};
+                  // -30.0f: 30 derece yukari, 15.0f: 15 derece asagi
+                  float[] pitchOffsets = {-30.0f, 15.0f};
 
                   for (float pitchOffset : pitchOffsets) {
                       ItemStack projectileStack = player.getProjectileType(stack);
@@ -923,7 +924,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --staged --quiet || git commit -m "Dikey Coklu Atis buyusu ve ritueli eklendi"
+          git diff --staged --quiet || git commit -m "Dikey Coklu Atis acilari (-30 ve +15 derece) guncellendi"
           git push
 
       - name: Java 21 Kur
