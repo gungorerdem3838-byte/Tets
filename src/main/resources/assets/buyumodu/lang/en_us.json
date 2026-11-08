@@ -5,7 +5,9 @@
   "block.buyumodu.emerald_pedestal": "Emerald Pedestal",
   "item.buyumodu.kanama_book": "Bleeding Enchantment Book",
   "item.buyumodu.can_calma_book": "Lifesteal Enchantment Book",
+  "item.buyumodu.dikey_coklu_atis_book": "Vertical Multishot Enchantment Book",
   "enchantment.buyumodu.kanama": "Bleeding",
   "enchantment.buyumodu.can_calma": "Lifesteal",
+  "enchantment.buyumodu.dikey_coklu_atis": "Vertical Multishot",
   "effect.buyumodu.bleeding": "Bleeding"
 }

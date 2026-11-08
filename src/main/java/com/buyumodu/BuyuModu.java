@@ -67,10 +67,18 @@ public class BuyuModu implements ModInitializer {
             Identifier.of(MOD_ID, "can_calma")
     );
 
+    public static final RegistryKey<Enchantment> DIKEY_COKLU_ATIS_ENCHANTMENT = RegistryKey.of(
+            RegistryKeys.ENCHANTMENT,
+            Identifier.of(MOD_ID, "dikey_coklu_atis")
+    );
+
     public static final Item KANAMA_BOOK = registerItem("kanama_book",
             settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
 
     public static final Item CAN_CALMA_BOOK = registerItem("can_calma_book",
+            settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
+
+    public static final Item DIKEY_COKLU_ATIS_BOOK = registerItem("dikey_coklu_atis_book",
             settings -> new Item(settings.maxCount(1).rarity(Rarity.RARE).component(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, true)));
 
     public static final RegistryKey<ItemGroup> BUYU_ITEM_GROUP = RegistryKey.of(
@@ -131,6 +139,16 @@ public class BuyuModu implements ModInitializer {
                                         });
                                 entries.add(canCalmaBook);
                             }
+
+                            ItemStack dikeyBook = new ItemStack(DIKEY_COKLU_ATIS_BOOK);
+                            context.lookup().getOptional(RegistryKeys.ENCHANTMENT)
+                                    .flatMap(reg -> reg.getOptional(DIKEY_COKLU_ATIS_ENCHANTMENT))
+                                    .ifPresent(dikeyRef -> {
+                                        ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+                                        builder.add(dikeyRef, 1);
+                                        dikeyBook.set(DataComponentTypes.STORED_ENCHANTMENTS, builder.build());
+                                    });
+                            entries.add(dikeyBook);
                         })
                         .build());
 

@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -121,9 +122,14 @@ public class PedestalBlock extends Block {
         return id.contains("sword") || id.contains("axe") || id.contains("trident") || id.contains("mace");
     }
 
+    public static boolean isBowWeapon(ItemStack stack) {
+        if (stack.isEmpty()) return false;
+        return stack.isOf(Items.BOW) || stack.isIn(ItemTags.BOW_ENCHANTABLE);
+    }
+
     private static void tryPerformRitual(World world, BlockPos centerPos) {
         ItemStack centerItem = getDisplayedItem(world, centerPos);
-        if (!isCombatWeapon(centerItem)) return;
+        if (centerItem.isEmpty()) return;
 
         // Sütun bloklarının yerinde olup olmadığını doğrula ve üstlerindeki eşyaları al
         Item[] emeraldItems = new Item[4];
@@ -141,6 +147,36 @@ public class PedestalBlock extends Block {
         }
 
         Registry<Enchantment> enchRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
+
+        // YAY RITUELI: DIKEY COKLU ATIS
+        if (isBowWeapon(centerItem)) {
+            Optional<RegistryEntry.Reference<Enchantment>> verticalOpt = enchRegistry.getOptional(BuyuModu.DIKEY_COKLU_ATIS_ENCHANTMENT);
+            Optional<RegistryEntry.Reference<Enchantment>> infinityOpt = enchRegistry.getOptional(Enchantments.INFINITY);
+
+            boolean hasInfinity = infinityOpt.isPresent() && EnchantmentHelper.getLevel(infinityOpt.get(), centerItem) > 0;
+            if (verticalOpt.isPresent() && !hasInfinity && EnchantmentHelper.getLevel(verticalOpt.get(), centerItem) == 0) {
+                boolean allLapis = true;
+                for (int i = 0; i < 4; i++) {
+                    if (emeraldItems[i] != Items.LAPIS_LAZULI) allLapis = false;
+                }
+
+                boolean pearlOppositeMatch =
+                        (pearlItems[0] == Items.ARROW && pearlItems[3] == Items.ARROW &&
+                         pearlItems[1] == Items.IRON_INGOT && pearlItems[2] == Items.IRON_INGOT)
+                        ||
+                        (pearlItems[0] == Items.IRON_INGOT && pearlItems[3] == Items.IRON_INGOT &&
+                         pearlItems[1] == Items.ARROW && pearlItems[2] == Items.ARROW);
+
+                if (allLapis && pearlOppositeMatch) {
+                    completeRitual(world, centerPos, centerItem, verticalOpt.get(), 1);
+                    return;
+                }
+            }
+        }
+
+        // YAKIN DOVUS SILAHI RITUELLERI
+        if (!isCombatWeapon(centerItem)) return;
+
         Optional<RegistryEntry.Reference<Enchantment>> bleedingOpt = enchRegistry.getOptional(BuyuModu.KANAMA_ENCHANTMENT);
         Optional<RegistryEntry.Reference<Enchantment>> lifestealOpt = enchRegistry.getOptional(BuyuModu.CAN_CALMA_ENCHANTMENT);
 

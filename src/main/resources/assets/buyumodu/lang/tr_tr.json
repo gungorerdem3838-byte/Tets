@@ -5,7 +5,9 @@
   "block.buyumodu.emerald_pedestal": "Zümrüt Sütunu",
   "item.buyumodu.kanama_book": "Kanama Büyü Kitabı",
   "item.buyumodu.can_calma_book": "Can Çalma Büyü Kitabı",
+  "item.buyumodu.dikey_coklu_atis_book": "Dikey Çoklu Atış Büyü Kitabı",
   "enchantment.buyumodu.kanama": "Kanama",
   "enchantment.buyumodu.can_calma": "Can Çalma",
+  "enchantment.buyumodu.dikey_coklu_atis": "Dikey Çoklu Atış",
   "effect.buyumodu.bleeding": "Kanama"
 }
