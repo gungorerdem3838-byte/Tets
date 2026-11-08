@@ -40,7 +40,8 @@ public class BowItemMixin {
         if (pullProgress < 0.1f) return;
 
         float speed = pullProgress * 3.0f;
-        float[] pitchOffsets = {-6.0f, 6.0f};
+        // -30.0f: 30 derece yukari, 15.0f: 15 derece asagi
+        float[] pitchOffsets = {-30.0f, 15.0f};
 
         for (float pitchOffset : pitchOffsets) {
             ItemStack projectileStack = player.getProjectileType(stack);
